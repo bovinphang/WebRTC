@@ -10,9 +10,36 @@
 
 ## 一、AppRTC的服务器组成
 
-1. AppRTC 房间服务器  https://github.com/webrtc/apprtc
-2. Collider - 信令服务器  上面 Github 工程里自带，在 src/collider 下
-3. coTurn - 打洞(内网穿透)服务器   https://github.com/coturn/coturn
+1. AppRTC - 房间服务器(Room Server)  https://github.com/webrtc/apprtc
+  ​      房间服务器是用来创建和管理通话会话的状态维护,是双方通话还是多方通话,加入与离开房间等等。
+
+2. Collider - 信令服务器(Signaling Server)  上面 Github 工程里自带，在 src/collider 下
+  ​      信令服务器是用来管理和协助通话终端建立去中心的点对点通话的一个角色.这个角色要负责一下任务:
+  ```
+  - 用来控制通信发起或者结束的连接控制消息；
+  - 发生错误时用来相互通告的消息；
+  - 各自一方媒体流元数据，比如像解码器、解码器的配置、带宽、媒体类型等等；
+  - 两两之间用来建立安全连接的关键数据；
+  - 外界所能看到的网络上的数据，比如广域网IP地址、端口等。
+  ```
+   信令服务器的具体协议实现没有严格规定,只要实现功能就OK。
+
+3. coTurn - 防火墙打洞(内网穿透)服务器(STUN/TURN/ICE Server)   https://github.com/coturn/coturn
+  ​      我们目前大部分人连接互联网时都处于防火墙后面或者配置私有子网的家庭(NAT)路由器后面,这就导致我们的计算机的IP地址不是广域网IP地址,故而不能相互之间直接通讯。 正因为这样的一个场景,我们得想办法去穿越这些防火墙或者家庭(NAT)路由器,让两个同处于私有网络里的计算机能够通讯起来。
+
+  ​     STUN(Simple Traversal of UDP over NATs,NAT 的UDP简单穿越); STUN协议服务器就是用来解决这些问题:
+
+  ​       1) 探测和发现通讯对方是否躲在防火墙或者NAT路由器后面。
+
+  ​       2) 确定内网客户端所暴露在外的广域网的IP和端口以及NAT类型等信息;STUN服务器利用这些信息协助不同内网的计算机之间建立点对点的UDP通讯.
+
+
+  ​       STUN协议可以很好的解决一般家用(NAT)路由器环境的打洞问题,但是对于大部分的企业的网络环境就不是很好了。
+  ​       这时需要一个新的解决方案:TURN（Traversal Using Relay NAT,允许在TCP或UDP的连线上跨越 NAT 
+  或防火墙。TURN是一个Client-Server协议。TURN的NAT穿透方法与STUN类似，都是通过取得应用层中的公有地址达到NAT穿透,但实现TURN client的终端必须在通讯开始前与TURN server进行交互,并要求TURN server产生"relay port", 也就是relayed-transport-address.这时 TURN server会建立peer,即远端端点（remote endpoints）, 开始进行中继（relay）的动作,TURN client利用relay port将资料传送至peer,再由peer转传到另一方的TURN client.通过服务器新产生的peer来进行数据的中转.
+  ​       ICE协议就是综合前面2种协议的综合性NAT穿越解决方案.
+  ​       通过offer/answer模型建立基于UDP的通讯。ICE是offer/answer模型的扩展，通过在offer和answer的SDP(Session Description Protocol)里面包含多种IP地址和端口，然后对本地SDP和远程SDP里面的IP地址进行配对，然后通过P2P连通性检查进行连通性测试工作，如果测试通过即表明该传输地址对可以建立连接。其中IP地址和端口（也就是地址）有以下几种：本机地址、通过STUN服务器反射后获取的server-reflexive地址（内网地址被NAT映射后的地址）、relayed地址（和TURN转发服务器相对应的地址）及Peer reflexive地址等。
+
 4. 需要自己实现coTurn连接信息接口，主要返回用户名、密码和turn配置信息，通常叫做TURN REST API,不实现这个接口的话AppRTCDemo连不上服务器，浏览器访问的话可以正常访问。
 
 ## 二、准备工作
