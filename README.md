@@ -28,7 +28,7 @@
 
 Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engine SDK for Python之前，我们必须安装Python 2.7。
 
-##### 安装Python 2.7 （因CentOS 7 已预装 Python 2.7.5，可略过此步骤）
+#### 安装Python 2.7 （因CentOS 7 已预装 Python 2.7.5，可略过此步骤）
 
 1. 安装Python 2.7.12:
 
@@ -64,7 +64,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
    ```shell
    #!/usr/bin/python2.6.6
    ```
-##### 安装Google Engine SDK for Python
+#### 安装Google Engine SDK for Python
 
 1. 下载Google App Engine SDK for Python源码:
    ```shell
@@ -115,7 +115,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
 
 ## 五、安装Grunt
 
-##### 安装CNPM
+#### 安装CNPM
 
 在中国大陆的话，因为网络原因，我们可能需要使用cnpm：
 
@@ -123,7 +123,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
 [root@localhost src]# npm install -g cnpm --registry=https://registry.npm.taobao.org
 ```
 
-##### 安装Grunt
+#### 安装Grunt
 ```shell
 [root@localhost src]# npm -g install grunt-cli
 ```
@@ -165,7 +165,7 @@ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.144-0.b01.el7_4.x86_64/jr
 ```
 
 ## 七、安装AppRTC
-##### 安装git（若已安装，可略过此步骤）
+#### 安装git（若已安装，可略过此步骤）
 
 ```shell
 [root@localhost src]# yum install git
@@ -195,14 +195,14 @@ export PATH=$PATH:/usr/local/git/bin:/usr/local/git/libexec/git-core
 ```shell
 [root@localhost src]# . /etc/profile
 ```
-##### 获取 AppRTC 源码并安装项目依赖：
+#### 获取 AppRTC 源码并安装项目依赖：
 ```shell
 [root@localhost src]# git clone https://github.com/webrtc/apprtc.git
 [root@localhost src]# cd apprtc
 [root@localhost apprtc]# npm install
 ```
 
-##### 构建Apprtc项目：
+#### 构建Apprtc项目：
 
 ```shell
 [root@localhost apprtc]# grunt build
@@ -228,7 +228,7 @@ Aborted due to warnings.
 
 解决方法：通过python的包管理工具pip来安装requests
 
-##### 安装pip
+#### 安装pip
 
 pip类似RedHat里面的yum，安装Python包非常方便。
 
@@ -248,23 +248,23 @@ pip类似RedHat里面的yum，安装Python包非常方便。
 [root@localhost pip-9.0.1]# pip -V #测试pip是否安装成功
 ```
 
-##### 安装requests模块
+#### 安装requests模块
 
 ```shell
 [root@localhost src]# pip install requests
 ```
 
-##### 再次构建Apprtc项目：
+#### 再次构建Apprtc项目：
 
 ```shell
 [root@localhost src]# cd apprtc
 [root@localhost apprtc]# grunt build
 ```
 
-##### 运行Apprtc
+#### 运行Apprtc
 
 ```shell
-[root@localhost src]# dev_appserver.py /usr/local/src/apprtc/src/app_engine
+[root@localhost src]# dev_appserver.py --host 192.168.9.223 --port 8080 --admin_host 192.168.9.223 /usr/local/src/apprtc/src/app_engine
 ```
 
 dev_appserver.py 是/usr/local/google_appengine目录下的文件，已经配置在环境变量中。
@@ -277,8 +277,10 @@ dev_appserver.py 是/usr/local/google_appengine目录下的文件，已经配置
 
 ```shell
 [root@localhost src]# firewall-cmd --zone=public --add-port=80/tcp --permanent
-[root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent
 [root@localhost src]# firewall-cmd --zone=public --add-port=8000/tcp --permanent
+[root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent
+[root@localhost src]# firewall-cmd --zone=public --add-port=8089/tcp --permanent
+[root@localhost src]# firewall-cmd --zone=public --add-port=3478/tcp --permanent
 [root@localhost src]# firewall-cmd --reload   #重启防火墙，使开启的端口生效
 [root@localhost src]# firewall-cmd --permanent --query-port=80/tcp  #查询是否已开启的80端口
 ```
@@ -287,11 +289,11 @@ dev_appserver.py 是/usr/local/google_appengine目录下的文件，已经配置
 
 Collider是Google Chrome WebRTC项目里提供的用GO语言编写的基于WebSocket的信令服务器，也是Apprtc这个项目配套的一个信令服务器。在我们的Apprtc项目中就已经携带了它的源码。在安装collider之前，我们必须先安装Golang。
 
-##### 安装Golang
+#### 安装Golang
 
 go标准包安装：
 
-```
+```shell
 [root@localhost src]# wget https://studygolang.com/dl/golang/go1.9.1.linux-amd64.tar.gz
 [root@localhost src]# tar -zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local
 [root@localhost src]# mkdir -p /usr/local/gopath
@@ -300,7 +302,7 @@ go标准包安装：
 添加go到环境变量：
 
 ```shell
-[root@localhost src]# vi /etc/profile
+[root@localhost src]# vim /etc/profile 
 ```
 
 将其打开把：
@@ -340,7 +342,7 @@ $GOPATH 目录约定有三个子目录：
 [root@localhost src]# go version #测试go是否安装成功
 ```
 
-##### 构建
+#### 构建
 
 1. Checkout  `apprtc` 库
 
@@ -360,9 +362,9 @@ $GOPATH 目录约定有三个子目录：
 3. 将collider的源码目录链接到 `$GOPATH/src`
 
    ```shell
-   [root@localhost src]# ln -s /usr/local/src/apprtc/src/collider/collider $GOPATH/src
-   [root@localhost src]# ln -s /usr/local/src/apprtc/src/collider/collidermain $GOPATH/src
-   [root@localhost src]# ln -s /usr/local/src/apprtc/src/collider/collidertest $GOPATH/src
+   [root@localhost src]# ln -fs /usr/local/src/apprtc/src/collider/collider $GOPATH/src
+   [root@localhost src]# ln -fs /usr/local/src/apprtc/src/collider/collidermain $GOPATH/src
+   [root@localhost src]# ln -fs /usr/local/src/apprtc/src/collider/collidertest $GOPATH/src
    ```
 
 4. 安装collidermain项目依赖
@@ -409,19 +411,23 @@ $GOPATH 目录约定有三个子目录：
    [root@localhost src]# collidermain --help #测试collidermain是否安装成功
    ```
 
-##### 运行（启动colider）
+#### 运行（启动colider）
 
 ```shell
 [root@localhost src]# $GOPATH/bin/collidermain -port=8089 -tls=true
+[root@localhost src]# netstat -tunlp #
+[root@localhost src]# ps -ef |grep collidermain
 ```
 
-##### 测试
+注：-tls=true，表示需要证书。
+
+#### 测试
 
 ```shell
 [root@localhost src]# go test collider
 ```
 
-##### 部署
+#### 部署
 
 1. 修改房间服务器IP。即修改 [roomSrv](https://github.com/webrtc/apprtc/blob/master/src/collider/collidermain/main.go#L16) 为 你的apprtc服务器实例， e.g.
 
@@ -432,69 +438,78 @@ $GOPATH 目录约定有三个子目录：
 找开修改下面一行
 
 ```go
-var roomSrv = flag.String("room-server", "https://192.168.9.223", "The origin of the room server")
+var roomSrv = flag.String("room-server", "https://192.168.9.223:8080", "The origin of the room server")
 ```
 2. 然后重复上面构建部分的步骤5。
 
-### Install Collider
+#### 安装Collider
 
-1. Login on the machine that is going to run Collider.
-2. Create a Collider directory, this guide assumes it's created in the root (`/collider`).
-3. Create a certificate directory, this guide assumes it's created in the root (`/cert`).
-4. Copy `$GOPATH/bin/collidermain ` from your development machine to the `/collider` directory on your Collider machine.
+1. 登录将要运行Collider的机器。
+2. 创建一个Collider目录，这里假设它是创建在根目录 中的 (`/usr/local/collider`)。
+```shell
+[root@localhost src]# mkdir -p /usr/local/collider
+```
+3. 创建一个证书目录, 这里假设它是创建在根目录 中的 (`/usr/local/cert`)。
+```shell
+[root@localhost src]# mkdir -p /usr/local/cert
+```
+4. 从你的开发机器中拷贝`$GOPATH/bin/collidermain ` 到要运行Collider的机器的`/usr/local/collider` 目录中。
+```shell
+[root@localhost src]# cp -R /usr/local/gopath/bin/collidermain /usr/local/collider
+```
+#### 证书
 
-### Certificates
+如果你打算部署在生产环境，你应该使用证书，这样你就可以使用安全的websockets。把文件`cert.pem` 和 `key.pem` 放到目录 `/usr/local/cert/`中。 E.g. `/usr/local/cert/cert.pem` and `/usr/local/cert/key.pem`
 
-If you are deploying this in production, you should use certificates so that you can use secure websockets. Place the `cert.pem` and `key.pem` files in `/cert/`. E.g. `/cert/cert.pem` and `/cert/key.pem`
+#### 自动启动
 
-### Auto restart
-
-1\. Add a `/collider/start.sh` file:
+1\. 创建脚本文件 `/usr/local/collider/start.sh` ，写入以下内容:
 
 ```bash
 #!/bin/sh -
-/collider/collidermain 2>> /collider/collider.log
+/usr/local/collider/collidermain 2>> /usr/local/collider/collider.log
 ```
 
-2\. Make it executable by running `chmod 744 start.sh`.
+2\. 运行命令`chmod 744 /usr/local/collider/start.sh`使用其可以执行。
 
-#### If using inittab otherwise jump to step 5:
+#### 如果使用inittab按下面操作 ，否则跳到下面第5步:
 
-3\. Add the following line to `/etc/inittab` to allow automatic restart of the Collider process (make sure to either add `coll` as an user or replace it below with the user that should run collider):
-
+3\. 将下面一行添加到 `/etc/inittab` ，以允许Collider进程自动启动 (确保要么添加了 系统用户`coll`，要么将其替换为运行collider的用户):
 ```bash
-coll:2:respawn:/collider/start.sh
+coll:2:respawn:/usr/local/collider/start.sh
 ```
+4\. 运行命令 `init q` 使用inittab的改变在不重启系统的情况下生效。
 
-4\. Run `init q` to apply the inittab change without rebooting.
+#### 如果使用systemd:
 
-#### If using systemd:
-
-5\. Create a service by doing `sudo nano /lib/systemd/system/collider.service` and adding the following:
+5\. 通过 `sudo nano /lib/systemd/system/collider.service`命令创建一个服务，并添加以下内容:
 
 ```
 [Unit]
 Description=AppRTC signalling server (Collider)
  
 [Service]
-ExecStart=/collider/start.sh
+ExecStart=/usr/local/collider/start.sh
 StandardOutput=null
  
 [Install]
 WantedBy=multi-user.target
 Alias=collider.service
 ```
+注：若未安装nano，可使用以下命令安装之：
+```shell
+[root@localhost src]# yum install nano
+```
+6\. 启用服务: `sudo systemctl enable collider.service`
 
-6\. Enable the service: `sudo systemctl enable collider.service`
+7\. 验证它的启动和运行: `sudo systemctl status collider.service`
 
-7\. Verify it's up and running: `sudo systemctl status collider.service`
+#### 日志轮循设置
 
-#### Rotating Logs
-
-To enable rotation of the `/collider/collider.log` file add the following contents to the `/etc/logrotate.d/collider` file:
+要启用日志轮循文件 `/usr/local/collider/collider.log` ，需添加以下内容到文件 `/etc/logrotate.d/collider` 中:
 
 ```
-/collider/collider.log {
+/usr/local/collider/collider.log {
     daily
     compress
     copytruncate
@@ -506,4 +521,115 @@ To enable rotation of the `/collider/collider.log` file add the following conten
 }
 ```
 
-The log is rotated daily and removed after 10 days. Archived logs are in `/collider`.
+这些日志每天轮循，10天后删除。 归档日志在 `/usr/local/collider`。
+
+## 九、安装coTurn
+
+coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com/p/coturn/> 或者我们直接下载已经编译好的软件包，打开这个网址: <http://turnserver.open-sys.org/downloads/> 找到适合自己Linux系统的下载即可。
+
+#### 安装coTurn
+
+```shell
+[root@localhost src]# wget http://turnserver.open-sys.org/downloads/v4.5.0.6/turnserver-4.5.0.6-CentOS7.2-x86_64.tar.gz
+[root@localhost src]# tar -zxvf turnserver-4.5.0.6-CentOS7.2-x86_64.tar.gz -C /usr/local
+[root@localhost src]# mv /usr/local/turnserver-4.5.0.6 /usr/local/turnserver
+[root@localhost src]# cd /usr/local/turnserver
+[root@localhost turnserver]# ./install.sh
+```
+
+#### 生成签名证书
+
+生成的证书在/usr/local/cert/目录下：
+
+```shell
+[root@localhost turnserver]# sudo openssl req -x509 -newkey  rsa:2048 -keyout /usr/local/cert/turn_server_pkey.pem -out /usr/local/cert/turn_server_cert.pem -days 99999 -nodes
+```
+
+#### 生成TurnServer用户名和密码
+
+命令格式：turnadmin -k -u 用户名 -r north.gov -p 密码
+
+```shell
+[root@localhost turnserver]# turnadmin -k -u bovin -r north.gov -p apprtc666
+```
+
+复制保存一下生成出来的key，此处我的为：0x8894ae0fa69d69b54fbc7c4810a04660
+
+#### 编辑配置文件
+
+```shell
+[root@localhost turnserver]# vim /etc/turnserver/turnserver.conf
+```
+
+将其打开，修改内容如下：
+
+```
+listening-device=eth0
+relay-device=eth0
+
+# 记得开启端口
+#min-port=49152
+#max-port=65535
+
+# 是否取消TURN服务器运行'extra'详细模式。
+# 这种模式是非常恼人的,产生大量的输出。
+# 在任何正常情况下不建议。
+# 更详细的输出日志
+Verbose
+
+# 是否取消在TURN消息中使用指纹。
+# 默认情况下,指纹是关闭的。
+# WebRTC 的消息里会用到
+fingerprint
+
+# 是否取消使用长期证书机制。
+# 默认情况下不使用凭证机制(允许任何用户)。
+# 这个选项可能使用用户数据文件或PostgreSQL或MySQL或Redis来存储用户密钥。
+# WebRTC 认证需要
+lt-cred-mech
+
+# REST API 认证需要
+use-auth-secret
+
+# REST API 加密所需的 KEY
+# 这里我们使用“静态”的 KEY，Google 自己也用的这个
+# static-auth-secret=4080218913
+static-auth-secret=bovin
+user=bovin:0x8894ae0fa69d69b54fbc7c4810a04660   #（替换成上一步通过turnadmin生成的key）
+user=bovin:apprtc666
+
+# TURN REST API的长期凭证机制范围。
+# 用户登录域
+#realm=
+
+# 可为 TURN 服务提供更安全的访问
+stale-nonce=600
+
+# 签名证书
+cert=/usr/local/cert/turn_server_cert.pem
+pkey=/usr/local/cert/turn_server_pkey.pem
+
+# 屏蔽 loopback, multicast IP地址的 relay
+no-loopback-peers
+no-multicast-peers
+
+# 启用 Mobility ICE 支持
+mobility
+
+# 禁用本地 telnet cli 管理接口
+no-cli
+```
+
+（查看[turnserver.conf文件详解](./turnserver.conf_introduction.md) ）
+
+#### 启动coturn服务器
+
+```shell
+[root@localhost turnserver]# systemctl start turnserver
+```
+
+#### 测试
+
+在浏览器访问http://外网ip:3478,如果看到“TURN Server”，说明已经搭好了。
+
+![测试TURN Server](./images/TURN_Server_test.png){:height="172px" width="623px"}
