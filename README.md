@@ -53,7 +53,46 @@
    grunt，是 Node.js 下的一套任务执行系统，经过 Gruntfile.js 的配置，可以做很多事情。首先安装 Node.js。使用 nvm 可以很方便的为自己的 Linux 账户安装并设置好 Node.js。（而后，你可以选择安装 cnpm，这样就可以使用国内的缓存节点，比npm install 命令会快许多，如果你只用这一次 grunt，那么不装这个也是可以的。）接下来只需要执行一个 npm install -g grunt-cli 即可安装好 grunt。
 2. Collider 依赖 golang。尿性的问题来了：墙……安装 golang 和日后使用 golang 所需的包，几乎都要翻墙。所以这里解决掉墙这个问题后，再使用 gvm 安装 golang 即可完成我们的准备工作。
 
-## 三、安装Google Engine SDK for Python
+## 三、翻墙
+
+#### 方法一：安装vpn（Virtual PrivateNetwork:虚拟个人专用网络）
+
+vpn下载地址：https://www.expressvpn.com/support/vpn-setup/app-for-linux/#download (已被墙)
+
+主要用于员工去外地出差，还想访问公司内网，而本文用vpn是为了在国内访问国外网站，从国外网站下载配置apprtc所需要的包。
+
+1. 安装expressvpn:
+
+   ```shell
+   [root@localhost src]# uname -m  #确认linux版本
+   x86_64
+   [root@localhost src]# sudo yum install expressvpn-1.1.0-1.x86_64.rpm
+   ```
+
+2. 激活vpn（这个激活码需要购买）：
+
+   ```shell
+   [root@localhost src]# expressvpn activate
+   ```
+
+3. 连接vpn：
+
+```shell
+[root@localhost src]# expressvpn connect
+```
+4. 断开vpn：
+
+```shell
+[root@localhost src]# expressvpn disconnect
+```
+
+#### 
+
+#### 方法二：修改/etc/hosts来翻墙
+
+修改/etc/hosts来翻墙，简单快捷，翻墙host的git地址： [https://github.com/racaljk/hosts/blob/master/hosts#L2](https://github.com/racaljk/hosts/blob/master/hosts#L2)
+
+## 四、安装Google Engine SDK for Python
 
 官网地址：https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python
 
@@ -127,7 +166,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
    ```
    配置成功之后我们就可以在命令行中使用dev_appserver.py了
 
-## 四、安装NodeJS
+## 五、安装NodeJS
 
 ```shell
 [root@localhost src]# wget https://nodejs.org/dist/v8.7.0/node-v8.7.0.tar.gz
@@ -144,7 +183,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
 [root@localhost src]# yum install -y nodejs
    ```
 
-## 五、安装Grunt
+## 六、安装Grunt
 
 #### 安装CNPM
 
@@ -162,7 +201,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
 ```shell
 [root@localhost src]# cnpm -g install grunt-cli
 ```
-## 六、Open-JDK
+## 七、Open-JDK
 Apprtc这个项目还需要JAVA环境，因此我们还需要配置一下Java环境。这里我使用的是Open-JDK
 
 官网:http://openjdk.java.net/
@@ -195,7 +234,7 @@ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.144-0.b01.el7_4.x86_64/jr
 [root@localhost src]# source  ~/.bashrc
 ```
 
-## 七、安装AppRTC
+## 八、安装AppRTC
 #### 安装git（若已安装，可略过此步骤）
 
 ```shell
@@ -230,7 +269,7 @@ export PATH=$PATH:/usr/local/git/bin:/usr/local/git/libexec/git-core
 ```shell
 [root@localhost src]# git clone https://github.com/webrtc/apprtc.git
 [root@localhost src]# cd apprtc
-[root@localhost apprtc]# npm install
+[root@localhost apprtc]# cnpm install
 ```
 
 #### 构建Apprtc项目：
@@ -290,17 +329,40 @@ pip类似RedHat里面的yum，安装Python包非常方便。
 ```shell
 [root@localhost src]# cd apprtc
 [root@localhost apprtc]# grunt build
+[root@localhost apprtc]# chmod -R 777 ./out
 ```
+
+构建成功会出现了out文件夹，如下：
+
+![build apprtc](./images/build-out-folder.png)
 
 #### 运行Apprtc
 
 ```shell
-[root@localhost src]# dev_appserver.py --host 192.168.9.223 --port 8080 --admin_host 192.168.9.223 /usr/local/src/apprtc/src/app_engine
+[root@localhost apprtc]# dev_appserver.py --host 192.168.9.223 --port 8080 --admin_host 192.168.9.223 /usr/local/src/apprtc/out/app_engine
+INFO     2017-10-19 04:10:11,422 sdk_update_checker.py:229] Checking for updates to the SDK.
+INFO     2017-10-19 04:10:32,452 sdk_update_checker.py:245] Update check failed: <urlopen error timed out>
+INFO     2017-10-19 04:10:32,492 api_server.py:205] Starting API server at: http://localhost:42757
+INFO     2017-10-19 04:10:32,498 dispatcher.py:197] Starting module "default" running at: http://192.168.9.223:8080
+INFO     2017-10-19 04:10:32,499 admin_server.py:116] Starting admin server at: http://192.168.9.223:8000
+ERROR    2017-10-19 04:15:39,486 wsgi.py:263] 
 ```
 
-dev_appserver.py 是/usr/local/google_appengine目录下的文件，已经配置在环境变量中。
+报错：INFO     2017-10-19 04:10:32,452 sdk_update_checker.py:245] Update check failed: <urlopen error timed out>
 
-如果要外网访问，加上host和端口，如：dev_appserver.py --host 121.40.28.178 --port 80 --admin_host 121.40.28.178  /usr/local/src/apprtc/src/app_engine
+原因：没开vpn，连不上谷歌的内容，打开vpn，再次运行即可。
+
+注：dev_appserver.py 是/usr/local/google_appengine目录下的文件，已经配置在环境变量中。
+
+浏览器中打开http://192.168.9.223:8080访问，服务器报以下错误：
+
+![build apprtc](./images/apprtc-error.png)
+
+原因：Starting with Chrome 47, getUserMedia() requests are only allowed from secure origins: HTTPS or localhost. `getUserMedia`needs HTTPS to work. You'll have to implement HTTPS for your webserver. `localhost` is the only domain allowed to use `getUserMedia` without HTTPS.
+
+解决：You can setup a self signed ssl certificate for the local webserver and then you can access with `https://192.168.9.223:<https port>`
+
+如果要外网访问，加上host和端口，如：dev_appserver.py --host 121.40.28.178 --port 80 --admin_host 121.40.28.178  /usr/local/src/apprtc/out/app_engine
 
 参照上面的配置，在浏览器中打开http://121.40.28.178即可访问 。
 
@@ -316,7 +378,7 @@ dev_appserver.py 是/usr/local/google_appengine目录下的文件，已经配置
 [root@localhost src]# firewall-cmd --permanent --query-port=80/tcp  #查询是否已开启的80端口
 ```
 
-## 八、安装Collider
+## 九、安装Collider
 
 Collider是Google Chrome WebRTC项目里提供的用GO语言编写的基于WebSocket的信令服务器，也是Apprtc这个项目配套的一个信令服务器。在我们的Apprtc项目中就已经携带了它的源码。在安装collider之前，我们必须先安装Golang。
 
@@ -469,7 +531,7 @@ $GOPATH 目录约定有三个子目录：
 找开修改下面一行
 
 ```go
-var roomSrv = flag.String("room-server", "https://192.168.9.223:8080", "The origin of the room server")
+var roomSrv = flag.String("room-server", "http://192.168.9.223:8080", "The origin of the room server")
 ```
 2. 然后重复上面构建部分的步骤5。
 
@@ -554,7 +616,7 @@ Alias=collider.service
 
 这些日志每天轮循，10天后删除。 归档日志在 `/usr/local/collider`。
 
-## 九、安装coTurn
+## 十、安装coTurn
 
 coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com/p/coturn/> 或者我们直接下载已经编译好的软件包，打开这个网址: <http://turnserver.open-sys.org/downloads/> 找到适合自己Linux系统的下载即可。
 
