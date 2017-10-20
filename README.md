@@ -512,7 +512,7 @@ $GOPATH 目录约定有三个子目录：
 [root@localhost src]# ps -ef |grep collidermain
 ```
 
-注：-tls=true，表示需要证书。
+注：-tls=true，表示需要证书。这里指定端口为8089，因为其默认是443，而nginx监听的ssl默认端口也为443，会造成冲突。
 
 #### 测试
 
@@ -531,7 +531,7 @@ $GOPATH 目录约定有三个子目录：
 找开修改下面一行
 
 ```go
-var roomSrv = flag.String("room-server", "http://192.168.9.223:8080", "The origin of the room server")
+var roomSrv = flag.String("room-server", "https://192.168.9.223:8080", "The origin of the room server")
 ```
 2. 然后重复上面构建部分的步骤5。
 
@@ -560,7 +560,7 @@ var roomSrv = flag.String("room-server", "http://192.168.9.223:8080", "The origi
 
 ```bash
 #!/bin/sh -
-/usr/local/collider/collidermain 2>> /usr/local/collider/collider.log
+/usr/local/collider/collidermain -port=8089 -tls=true 2>> /usr/local/collider/collider.log
 ```
 
 2\. 运行命令`chmod 744 /usr/local/collider/start.sh`使用其可以执行。
@@ -593,9 +593,18 @@ Alias=collider.service
 ```shell
 [root@localhost src]# yum install nano
 ```
-6\. 启用服务: `sudo systemctl enable collider.service`
+6\. 启用服务:
 
-7\. 验证它的启动和运行: `sudo systemctl status collider.service`
+```shell
+[root@localhost src]# sudo systemctl enable collider.service #开机运行服务
+[root@localhost src]# systemctl start collider.service #启动服务
+```
+
+7\. 验证它的启动和运行:
+
+```shell
+[root@localhost src]# sudo systemctl status collider.service
+```
 
 #### 日志轮循设置
 
@@ -719,6 +728,7 @@ no-cli
 
 ```shell
 [root@localhost turnserver]# systemctl start turnserver
+[root@localhost turnserver]# systemctl status turnserver #查询turnserver服务运行状态
 ```
 
 #### 测试
