@@ -11,17 +11,19 @@
 
 ## <a name='toc'>目录</a>
 
-    1. [AppRTC的服务器组成](#apprtc-composition)
-    2. [准备工作](#preparation-works)
-    3. [翻墙](#vpn-setting)
-    4. [安装Google Engine SDK for Python](#gae-install)
-    5. [安装NodeJS](#nodejs-install)
-    6. [安装Grunt](#grunt-install)
-    7. [安装Open-JDK](#open-jdk-install)
-    8. [安装AppRTC](#apprtc-install)
-    9. [安装Collider](#collider-install)
-    10.[安装coTurn](#coTurn-install)
-    11.[配置Nginx服务器支持HTTPS](#nginx-https-supported)
+
+1. [AppRTC的服务器组成](#apprtc-composition)
+2. [准备工作](#preparation-works)
+3. [翻墙](#vpn-setting)
+4. [安装Google Engine SDK for Python](#gae-install)
+5. [安装NodeJS](#nodejs-install)
+6. [安装Grunt](#grunt-install)
+7. [安装Open-JDK](#open-jdk-install)
+8. [安装AppRTC](#apprtc-install)
+9. [安装Collider](#collider-install)
+10. [安装coTurn](#coTurn-install)
+11. [配置Nginx服务器支持HTTPS](#nginx-https-supported)
+
 
 ## <a name='apprtc-composition'>一、AppRTC的服务器组成</a>
 
