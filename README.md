@@ -44,6 +44,8 @@
 3. coTurn - 防火墙打洞(内网穿透)服务器(STUN/TURN/ICE Server)   https://github.com/coturn/coturn
   ​      我们目前大部分人连接互联网时都处于防火墙后面或者配置私有子网的家庭(NAT)路由器后面,这就导致我们的计算机的IP地址不是广域网IP地址,故而不能相互之间直接通讯。 正因为这样的一个场景,我们得想办法去穿越这些防火墙或者家庭(NAT)路由器,让两个同处于私有网络里的计算机能够通讯起来。
 
+  ![NAT Network](./images/nat-network.png)
+
   ​     STUN(Simple Traversal of UDP over NATs,NAT 的UDP简单穿越); STUN协议服务器就是用来解决这些问题:
 
   ​       1) 探测和发现通讯对方是否躲在防火墙或者NAT路由器后面。
@@ -309,6 +311,22 @@ ICE_SERVER_BASE_URL = 'https://192.168.9.223'
 #ICE_SERVER_URL_TEMPLATE = '%s/v1alpha/iceconfig?key=%s'
 ICE_SERVER_URL_TEMPLATE = '%s/iceconfig.php?key=%s'  #如果iceconfig.php未实现，可用默认配置，但是Android Apk会有问题
 
+# TURN_SERVER_OVERRIDE = [
+#   {
+#     "urls": [
+#       "turn:192.168.9.223:3478?transport=udp",
+#       "turn:192.168.9.223:3478?transport=tcp"
+#     ],
+#     "username": "bovin",
+#     "credential": "apprtc666"
+#   },
+#   {
+#     "urls": [
+#       "stun:stun.l.google.com:19305"
+#     ]
+#   }
+# ]
+
 #将WSS_INSTANCE_HOST_KEY改为信令服务器可访问的地址，不需要协议，没有URL
 WSS_INSTANCES = [{
     #WSS_INSTANCE_HOST_KEY: 'apprtc-ws.webrtc.org:443',
@@ -323,8 +341,13 @@ WSS_INSTANCES = [{
 }]
 ```
 
+如果没有ice,需要修改constants.py  将TURN_SERVER_OVERRIDE的注释去掉，写入自己的turn或者stun(注意python文件的格式)。
 
 **~~修改apprtc.py~~**
+
+~~如果没做ssl支持，需要修改apprtc.py：~~
+~~wss=>ws~~
+~~https=>http~~
 
 ```shell
 [root@localhost apprtc]# vi /usr/local/src/apprtc/src/app_engine/apprtc.py
@@ -851,7 +874,7 @@ no-cli
 
 在浏览器访问http://外网ip:3478,如果看到“TURN Server”，说明已经搭好了。
 
-![测试TURN Server](./images/TURN_Server_test.png){:height="172px" width="623px"}
+![测试TURN Server](./images/TURN_Server_test.png)
 
 ## <a name='nginx-https-supported'>十一、配置Nginx服务器支持HTTPS</a>
 
@@ -980,12 +1003,12 @@ An optionalcompany name []: ← 可以不输入
 
 由于可信的证书颁发机构(CA机构)只有那么几家，所以必须要从他们那里获取或者购买。下面列出一些受浏览器信任的免费SSL证书：
 
-1. **腾讯云（网址：**https://console.qcloud.com/ssl**，公司名：腾讯）**
-2. **StartSSL（网址：**http://www.startssl.com**，公司名：StartCom）**
+1. **腾讯云（网址：**https://console.qcloud.com/ssl **，公司名：腾讯）**
+2. **StartSSL（网址：**http://www.startssl.com **，公司名：StartCom）**
 
 ​       **StartSSL的操作教程：**http://www.freehao123.com/startssl-ssl/
 
-3. **Let's Encrypt（网址：**https://letsencrypt.org**，公司名：Let’s Encrypt）**
+3. **Let's Encrypt（网址：**https://letsencrypt.org **，公司名：Let’s Encrypt）**
 
 ​       **Let's Encrypt 证书生成详见：** https://certbot.eff.org/#centos6-nginx
 
@@ -1125,4 +1148,189 @@ server {
     }
 ```
 
-#### 
+#### 实现coturn连接信息的接口（TURN REST API）
+
+说明：
+
+1. TURN REST API [标准参考文档](https://tools.ietf.org/html/draft-uberti-behave-turn-rest-00)  ，REST API 是动态账号和密码， turn server和客户端交互时使用的。
+
+2. 由于 coTurn 没有自带该接口，所以需要自行实现。关于该接口的实现方式，详细的内容请参考 [coTurn原始文档](https://code.google.com/p/coturn/wiki/turnserver#TURN_REST_API)。
+3. 接口可通过php接口实现，并在coturn中配置。
+
+新建turn.php文件：
+
+```shell
+[root@localhost src]# vi /var/www/root/webrtc_richinfo_cn/turn.php
+```
+
+加入如下内容：
+
+```shell
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bovin
+ * Date: 2017-10-23
+ * Time: 17:47
+ */
+$request_username = $_GET["username"];
+if (empty($request_username)) {
+    echo "username == null";
+    exit;
+}
+$request_key       = $_GET["key"];
+$time_to_live      = 600;
+$timestamp         = time() + $time_to_live;//失效时间
+$response_username = $timestamp . ":" . $_GET["username"];
+$response_key      = $request_key;
+if (empty($response_key))
+    $response_key = "bovin"; //constants.py中CEOD_KEY
+
+$response_password = getSignature($response_username, $response_key);
+
+$jsonObj           = new Response();
+$jsonObj->username = $response_username;
+$jsonObj->password = $response_password;
+$jsonObj->ttl      = 86400;
+//此处需配置自己的服务器
+$jsonObj->uris = array("stun:192.168.9.223:3478", "turn:192.168.9.223:3478?transport=udp", "turn:192.168.9.223?transport=tcp");
+
+echo json_encode($jsonObj);
+
+/**
+ * 使用HMAC-SHA1算法生成签名值
+ *
+ * @param $str 源串
+ * @param $key 密钥
+ *
+ * @return 签名值
+ */
+function getSignature($str, $key)
+{
+    $signature = "";
+    if (function_exists('hash_hmac')) {
+        $signature = base64_encode(hash_hmac("sha1", $str, $key, true));
+    } else {
+        $blocksize = 64;
+        $hashfunc  = 'sha1';
+        if (strlen($key) > $blocksize) {
+            $key = pack('H*', $hashfunc($key));
+        }
+        $key       = str_pad($key, $blocksize, chr(0x00));
+        $ipad      = str_repeat(chr(0x36), $blocksize);
+        $opad      = str_repeat(chr(0x5c), $blocksize);
+        $hmac      = pack(
+            'H*', $hashfunc(
+                ($key ^ $opad) . pack(
+                    'H*', $hashfunc(
+                        ($key ^ $ipad) . $str
+                    )
+                )
+            )
+        );
+        $signature = base64_encode($hmac);
+    }
+    return $signature;
+}
+
+class Response
+{
+    public $username = "";
+    public $password = "";
+    public $ttl      = "";
+    public $uris     = array("");
+}
+
+?>
+```
+
+新建iceconfig.php文件：
+
+```shell
+[root@localhost src]# vi /var/www/root/webrtc_richinfo_cn/iceconfig.php
+```
+
+加入如下内容：
+
+```shell
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bovin
+ * Date: 2017-10-23
+ * Time: 17:51
+ */
+
+$request_username = "bovin";  //配置成自己的turn服务器用户名
+if (empty($request_username)) {
+    echo "username == null";
+    exit;
+}
+$request_key       = "apprtc666";  //配置成自己的turn服务器密码
+$time_to_live      = 600;
+$timestamp         = time() + $time_to_live;//失效时间
+$response_username = $timestamp . ":" . $_GET["username"];
+$response_key      = $request_key;
+if (empty($response_key))
+    $response_key = "bovin";//constants.py中CEOD_KEY
+
+$response_password = getSignature($response_username, $response_key);
+
+$arrayObj                  = array();
+$arrayObj[0]['username']   = $response_username;
+$arrayObj[0]['credential'] = $response_password;
+//配置成自己的stun/turn服务器
+$arrayObj[0]['urls'][0]    = "stun:192.168.9.223:3478";
+$arrayObj[0]['urls'][1]    = "turn:192.168.9.223:3478?transport=tcp";
+$arrayObj[0]['uris'][0]    = "stun:192.168.9.223:3478";
+$arrayObj[0]['uris'][1]    = "turn:192.168.9.223:3478?transport=tcp";
+$jsonObj                   = new Response();
+$jsonObj->lifetimeDuration = "300.000s";
+$jsonObj->iceServers       = $arrayObj;
+echo json_encode($jsonObj);
+
+/**
+ * 使用HMAC-SHA1算法生成签名值
+ *
+ * @param $str 源串
+ * @param $key 密钥
+ *
+ * @return 签名值
+ */
+function getSignature($str, $key)
+{
+    $signature = "";
+    if (function_exists('hash_hmac')) {
+        $signature = base64_encode(hash_hmac("sha1", $str, $key, true));
+    } else {
+        $blocksize = 64;
+        $hashfunc  = 'sha1';
+        if (strlen($key) > $blocksize) {
+            $key = pack('H*', $hashfunc($key));
+        }
+        $key       = str_pad($key, $blocksize, chr(0x00));
+        $ipad      = str_repeat(chr(0x36), $blocksize);
+        $opad      = str_repeat(chr(0x5c), $blocksize);
+        $hmac      = pack(
+            'H*', $hashfunc(
+                ($key ^ $opad) . pack(
+                    'H*', $hashfunc(
+                        ($key ^ $ipad) . $str
+                    )
+                )
+            )
+        );
+        $signature = base64_encode($hmac);
+    }
+    return $signature;
+}
+
+class Response
+{
+    public $lifetimeDuration = "";
+    public $iceServers       = array("");
+}
+
+?>
+```
+
