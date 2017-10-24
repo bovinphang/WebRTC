@@ -8,7 +8,22 @@
 
 下面介绍如何在Centos 7上搭建AppRTC项目。
 
-## 一、AppRTC的服务器组成
+
+## <a name='toc'>目录</a>
+
+    1. [AppRTC的服务器组成](#apprtc-composition)
+    2. [准备工作](#preparation-works)
+    3. [翻墙](#vpn-setting)
+    4. [安装Google Engine SDK for Python](#gae-install)
+    5. [安装NodeJS](#nodejs-install)
+    6. [安装Grunt](#grunt-install)
+    7. [安装Open-JDK](#open-jdk-install)
+    8. [安装AppRTC](#apprtc-install)
+    9. [安装Collider](#collider-install)
+    10.[安装coTurn](#coTurn-install)
+    11.[配置Nginx服务器支持HTTPS](#nginx-https-supported)
+
+## <a name='apprtc-composition'>一、AppRTC的服务器组成</a>
 
 1. AppRTC - 房间服务器(Room Server)  https://github.com/webrtc/apprtc
   ​      房间服务器是用来创建和管理通话会话的状态维护,是双方通话还是多方通话,加入与离开房间等等。
@@ -46,14 +61,14 @@
 
 4. 需要自己实现coTurn连接信息接口，主要返回用户名、密码和turn配置信息，通常叫做TURN REST API,不实现这个接口的话AppRTCDemo连不上服务器，浏览器访问的话可以正常访问。
 
-## 二、准备工作
+## <a name='preparation-works'>二、准备工作</a>
 
 1. AppRTC 依赖 [Google App Engine SDK for Python](https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python)离线版本,[Node.js](https://nodejs.org) 和 [Grunt](http://gruntjs.com/)。
    GAE SDK 安装很简单：下载、解压、添加到PATH环境变量即可完成。（谷歌已经关闭新应用的申请，不过好像不影响使用）
    grunt，是 Node.js 下的一套任务执行系统，经过 Gruntfile.js 的配置，可以做很多事情。首先安装 Node.js。使用 nvm 可以很方便的为自己的 Linux 账户安装并设置好 Node.js。（而后，你可以选择安装 cnpm，这样就可以使用国内的缓存节点，比npm install 命令会快许多，如果你只用这一次 grunt，那么不装这个也是可以的。）接下来只需要执行一个 npm install -g grunt-cli 即可安装好 grunt。
 2. Collider 依赖 golang。尿性的问题来了：墙……安装 golang 和日后使用 golang 所需的包，几乎都要翻墙。所以这里解决掉墙这个问题后，再使用 gvm 安装 golang 即可完成我们的准备工作。
 
-## 三、翻墙
+## <a name='vpn-setting'>三、翻墙</a>
 
 #### 方法一：安装vpn（Virtual PrivateNetwork:虚拟个人专用网络）
 
@@ -92,7 +107,7 @@ vpn下载地址：https://www.expressvpn.com/support/vpn-setup/app-for-linux/#do
 
 修改/etc/hosts来翻墙，简单快捷，翻墙host的git地址： [https://github.com/racaljk/hosts/blob/master/hosts#L2](https://github.com/racaljk/hosts/blob/master/hosts#L2)
 
-## 四、安装Google Engine SDK for Python
+## <a name='gae-install'>四、安装Google Engine SDK for Python</a>
 
 官网地址：https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python
 
@@ -166,7 +181,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
    ```
    配置成功之后我们就可以在命令行中使用dev_appserver.py了
 
-## 五、安装NodeJS
+## <a name='apprtc-composition'>五、安装NodeJS</a>
 
 ```shell
 [root@localhost src]# wget https://nodejs.org/dist/v8.7.0/node-v8.7.0.tar.gz
@@ -183,7 +198,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
 [root@localhost src]# yum install -y nodejs
    ```
 
-## 六、安装Grunt
+## <a name='grunt-install'>六、安装Grunt</a>
 
 #### 安装CNPM
 
@@ -201,7 +216,7 @@ Google Engine SDK for Python 使用的是Python 2.7。因此在安装Google Engi
 ```shell
 [root@localhost src]# cnpm -g install grunt-cli
 ```
-## 七、Open-JDK
+## <a name='open-jdk-install'>七、安装Open-JDK</a>
 Apprtc这个项目还需要JAVA环境，因此我们还需要配置一下Java环境。这里我使用的是Open-JDK
 
 官网:http://openjdk.java.net/
@@ -234,7 +249,7 @@ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.144-0.b01.el7_4.x86_64/jr
 [root@localhost src]# source  ~/.bashrc
 ```
 
-## 八、安装AppRTC
+## <a name='apprtc-install'>八、安装AppRTC</a>
 #### 安装git（若已安装，可略过此步骤）
 
 ```shell
@@ -271,6 +286,72 @@ export PATH=$PATH:/usr/local/git/bin:/usr/local/git/libexec/git-core
 [root@localhost src]# cd apprtc
 [root@localhost apprtc]# cnpm install
 ```
+
+#### 修改配置文件：
+
+主要是src/app_engine目录下的apprtc.py和constants.py文件。对于src/app_engine目录下的文件每次修改后需执行命令grunt build重新编译。
+
+**修改constants.py**
+
+```shell
+[root@localhost apprtc]# vi /usr/local/src/apprtc/src/app_engine/constants.py
+#TURN_BASE_URL = 'https://computeengineondemand.appspot.com'
+TURN_BASE_URL = 'https://192.168.9.223'  #这个是coturn所对应的连接信息接口的地址
+#TURN_URL_TEMPLATE = '%s/turn?username=%s&key=%s'
+TURN_URL_TEMPLATE = '%s/turn.php?username=%s&key=%s' #如果turn.php未实现，可使用默认配置
+#CEOD_KEY = '4080218913'
+CEOD_KEY = 'bovin'  #这里要和coturn的turnserver.conf中static-auth-secret的值一致
+
+#ICE_SERVER_BASE_URL = 'https://networktraversal.googleapis.com'
+ICE_SERVER_BASE_URL = 'https://192.168.9.223'
+#ICE_SERVER_URL_TEMPLATE = '%s/v1alpha/iceconfig?key=%s'
+ICE_SERVER_URL_TEMPLATE = '%s/iceconfig.php?key=%s'  #如果iceconfig.php未实现，可用默认配置，但是Android Apk会有问题
+
+#将WSS_INSTANCE_HOST_KEY改为信令服务器可访问的地址，不需要协议，没有URL
+WSS_INSTANCES = [{
+    #WSS_INSTANCE_HOST_KEY: 'apprtc-ws.webrtc.org:443',
+    WSS_INSTANCE_HOST_KEY: '192.168.9.223:8089',
+    WSS_INSTANCE_NAME_KEY: 'wsserver-std',
+    WSS_INSTANCE_ZONE_KEY: 'us-central1-a'
+}, {
+    #WSS_INSTANCE_HOST_KEY: 'apprtc-ws-2.webrtc.org:443',
+    WSS_INSTANCE_HOST_KEY: '192.168.9.223:8089',
+    WSS_INSTANCE_NAME_KEY: 'wsserver-std-2',
+    WSS_INSTANCE_ZONE_KEY: 'us-central1-f'
+}]
+```
+
+
+**~~修改apprtc.py~~**
+
+```shell
+[root@localhost apprtc]# vi /usr/local/src/apprtc/src/app_engine/apprtc.py
+ if wss_tls and wss_tls == 'false':
+    wss_url = 'ws://' + wss_host_port_pair + '/ws'
+    wss_post_url = 'http://' + wss_host_port_pair
+  else:
+    wss_url = 'wss://' + wss_host_port_pair + '/ws'
+    #wss_url = 'ws://' + wss_host_port_pair + '/ws'
+    wss_post_url = 'https://' + wss_host_port_pair
+    #wss_post_url = 'http://' + wss_host_port_pair
+
+def make_pc_config(ice_transports):
+  config = {
+  'iceServers': [],
+  #'iceServers': [{"urls":"stun:192.168.9.223"},{"urls":"turn:bovin@192.168.9.223","credential":"apprtc666"}],
+  'bundlePolicy': 'max-bundle',
+  'rtcpMuxPolicy': 'require'
+  };
+
+  if ice_transports:
+    config['iceTransports'] = ice_transports
+  return config
+```
+
+~~把原来的wss和https的scheme都改为ws和http，不要让客户端或者浏览器去使用SSL链接。若有第三方根证书的签名机构颁发的证书可忽略。~~
+
+注：**最新的apprtc版本 apprtc.py文件不需要修改**
+
 
 #### 构建Apprtc项目：
 
@@ -336,10 +417,10 @@ pip类似RedHat里面的yum，安装Python包非常方便。
 
 ![build apprtc](./images/build-out-folder.png)
 
-#### 运行Apprtc
+#### 运行Apprtc(务必使用sudo)
 
 ```shell
-[root@localhost apprtc]# dev_appserver.py --host 192.168.9.223 --port 8080 --admin_host 192.168.9.223 /usr/local/src/apprtc/out/app_engine
+[root@localhost apprtc]# sudo dev_appserver.py --host 192.168.9.223 --port 8080 --admin_host 192.168.9.223 /usr/local/src/apprtc/out/app_engine
 INFO     2017-10-19 04:10:11,422 sdk_update_checker.py:229] Checking for updates to the SDK.
 INFO     2017-10-19 04:10:32,452 sdk_update_checker.py:245] Update check failed: <urlopen error timed out>
 INFO     2017-10-19 04:10:32,492 api_server.py:205] Starting API server at: http://localhost:42757
@@ -370,15 +451,20 @@ ERROR    2017-10-19 04:15:39,486 wsgi.py:263]
 
 ```shell
 [root@localhost src]# firewall-cmd --zone=public --add-port=80/tcp --permanent
-[root@localhost src]# firewall-cmd --zone=public --add-port=8000/tcp --permanent
-[root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent
-[root@localhost src]# firewall-cmd --zone=public --add-port=8089/tcp --permanent
-[root@localhost src]# firewall-cmd --zone=public --add-port=3478/tcp --permanent
+[root@localhost src]# firewall-cmd --zone=public --add-port=443/tcp --permanent #用于 ICE Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=3478/tcp --permanent #用于 ICE Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=3478/udp --permanent #用于 ICE Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=8000/tcp --permanent #用于 Room admin server
+[root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent #用于 Room Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=8089/tcp --permanent #用于 Signal Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=49152-65535/tcp --permanent #用于 TURN/STUN Server
 [root@localhost src]# firewall-cmd --reload   #重启防火墙，使开启的端口生效
 [root@localhost src]# firewall-cmd --permanent --query-port=80/tcp  #查询是否已开启的80端口
 ```
 
-## 九、安装Collider
+注：3478 和 59000-65000 用于 TURN/STUN Server，注意一定要开放 3478 udp 端口，否则 STUN Binding 请求进不去；
+
+## <a name='collider-install'>九、安装Collider</a>
 
 Collider是Google Chrome WebRTC项目里提供的用GO语言编写的基于WebSocket的信令服务器，也是Apprtc这个项目配套的一个信令服务器。在我们的Apprtc项目中就已经携带了它的源码。在安装collider之前，我们必须先安装Golang。
 
@@ -508,6 +594,8 @@ $GOPATH 目录约定有三个子目录：
 
 ```shell
 [root@localhost src]# $GOPATH/bin/collidermain -port=8089 -tls=true
+若想后台运行，则执行：
+[root@localhost src]# nohup $GOPATH/bin/collidermain -port=8089 -tls=true &
 [root@localhost src]# netstat -tunlp #
 [root@localhost src]# ps -ef |grep collidermain
 ```
@@ -533,7 +621,25 @@ $GOPATH 目录约定有三个子目录：
 ```go
 var roomSrv = flag.String("room-server", "https://192.168.9.223:8080", "The origin of the room server")
 ```
-2. 然后重复上面构建部分的步骤5。
+2. 修改证书地址：
+
+```shell
+[root@localhost src]# vi /usr/local/src/apprtc/src/collider/collider/collider.go
+```
+
+找开修改下面一行
+
+```go
+e = server.ListenAndServeTLS("/cert/cert.pem", "/cert/key.pem")
+```
+
+为：
+
+```go
+e = server.ListenAndServeTLS("/usr/local/cert/turn_server_cert.pem", "/usr/local/cert/turn_server_pkey.pem")
+```
+
+3. 然后重复上面构建部分的步骤5。
 
 #### 安装Collider
 
@@ -597,7 +703,7 @@ Alias=collider.service
 
 ```shell
 [root@localhost src]# sudo systemctl enable collider.service #开机运行服务
-[root@localhost src]# systemctl start collider.service #启动服务
+[root@localhost src]# sudo systemctl start collider.service #启动服务
 ```
 
 7\. 验证它的启动和运行:
@@ -625,7 +731,7 @@ Alias=collider.service
 
 这些日志每天轮循，10天后删除。 归档日志在 `/usr/local/collider`。
 
-## 十、安装coTurn
+## <a name='coTurn-install'>十、安装coTurn</a>
 
 coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com/p/coturn/> 或者我们直接下载已经编译好的软件包，打开这个网址: <http://turnserver.open-sys.org/downloads/> 找到适合自己Linux系统的下载即可。
 
@@ -654,6 +760,14 @@ coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com
 ```shell
 [root@localhost turnserver]# turnadmin -k -u bovin -r north.gov -p apprtc666
 ```
+
+​        -k 表示生成一个long-term credential key 
+
+​        -u 表示用户名 
+
+​        -p 表示密码 
+
+​        -r 表示Realm域，（这个值的设置可能会有影响）
 
 复制保存一下生成出来的key，此处我的为：0x8894ae0fa69d69b54fbc7c4810a04660
 
@@ -736,3 +850,277 @@ no-cli
 在浏览器访问http://外网ip:3478,如果看到“TURN Server”，说明已经搭好了。
 
 ![测试TURN Server](./images/TURN_Server_test.png){:height="172px" width="623px"}
+
+## <a name='nginx-https-supported'>十一、配置Nginx服务器支持HTTPS</a>
+
+最后一步就是配置Nginx反向代理服务器，提供默认HTTPS的访问，新建Nginx虚拟主机配置文件，反向代理到8080端口。
+
+#### 安装Nginx
+
+此处不多说。
+
+#### HTTPS简介
+
+**什么是https?**
+
+超文本传输安全协议（英语：Hypertext Transfer Protocol Secure，缩写：HTTPS，也被称为HTTP overTLS，HTTP over SSL或HTTP Secure）是一种网络安全传输协议。在计算机网络上，HTTPS经由超文本传输协议进行通信，但利用SSL/TLS来对数据包进行加密。HTTPS开发的主要目的，是提供对网络服务器的身份认证，保护交换数据的隐私与完整性。(来源：维基百科）
+
+HTTPS其实是有两部分组成：HTTP + SSL / TLS，也就是在HTTP上又加了一层处理加密信息的模块。服务端和客户端的信息传输都会通过TLS进行加密，所以传输的数据都是加密后的数据。
+
+**https协议原理**
+
+首先，客户端与服务器建立连接，各自生成私钥和公钥，是不同的。服务器返给客户端一个公钥，然后客户端拿着这个公钥把要搜索的东西加密，称之为密文，并连并自己的公钥一起返回给服务器，服务器拿着自己的私钥解密密文，然后把响应到的数据用客户端的公钥加密，返回给客户端，客户端拿着自己的私钥解密密文，把数据呈现出来。
+
+#### 开启nginx的ssl模块
+
+默认情况下ssl模块并未被安装，如果要使用该模块则需要在编译时指定--with-http_ssl_module参数。若未安装，可按以下步骤安装：
+
+```shell
+[root@localhost ~]# cd /usr/local/src/nginx-1.13.6
+[root@localhost nginx-1.13.6]# ./configure --user=nginx --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_gzip_static_module --with-pcre --with-http_ssl_module
+[root@localhost nginx-1.13.6]# make #不需要make install安装。否则会覆盖
+```
+
+备份原有已经安装好的nginx：
+
+```shell
+[root@localhost nginx-1.13.6]# cp /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.bak
+```
+
+将刚刚编译好的nginx覆盖掉原来的nginx(ngixn必须先停止)：
+
+```shell
+[root@localhost nginx-1.13.6]# /usr/local/nginx/sbin/nginx -s stop
+[root@localhost nginx-1.13.6]# cp -f ./objs/nginx /usr/local/nginx/sbin/
+```
+
+启动nginx，查看nginx模块是否已经添加：
+
+```shell
+[root@localhost nginx-1.13.6]# /usr/local/nginx/sbin/nginx
+[root@localhost nginx-1.13.6]# /usr/local/nginx/sbin/nginx -V
+```
+
+#### 证书和私钥的生成
+
+默认情况下ssl模块并未被安装，如果要使用该模块则需要在编译时指定--with-http_ssl_module参数。若未安装，可按以下步骤安装：
+
+1.   进入你想创建证书和私钥的目录：
+
+```shell
+[root@localhost nginx-1.13.6]# mkdir -p /usr/local/nginx/conf/ssl
+[root@ nginx-1.13.6]# cd /usr/local/nginx/conf/ssl
+```
+
+注意：生成的目录一般放在nginx/conf/ssl目录。
+
+2. 创建服务器私钥(服务器证书密钥文件)server.key：
+
+```shell
+[root@localhost ssl]# openssl genrsa -des3 -out server.key 1024
+Generating RSA private key, 1024 bit long modulus
+..++++++
+..........++++++
+e is 65537 (0x10001)
+Enter pass phrase for server.key:
+Verifying - Enter pass phrase for server.key:
+```
+
+输入密码，确认密码，自己随便定义，但是要记住，后面会用到。
+
+3. 创建签名请求的证书（服务器证书的申请文件）（CSR）server.csr：
+```shell
+[root@localhost ssl]# openssl req -new -key server.key -out server.csr
+```
+
+输出内容为：
+```shell
+Enter passphrase for server.key: ← 输入前面第2步创建的密码
+You are aboutto be asked to enter information that will be incorporated
+into yourcertificate request.
+What you areabout to enter is what is called a Distinguished Name or a DN.
+There are quitea few fields but you can leave some blank
+For some fieldsthere will be a default value,
+If you enter'.', the field will be left blank.
+-----
+CountryName (2 letter code) [XX]:CN ← 国家代号，中国输入CN
+Stateor Province Name (full name) []:Guangdong ←省的全名，拼音
+LocalityName (eg, city) [Default City]:Shenzhen ←市的全名，拼音
+OrganizationName (eg, company) [Default Company Ltd]:Richinfo Corp. ← 公司英文名
+OrganizationalUnit Name (eg, section) []:front-end ←可以不输入
+CommonName (eg, your name or your server's hostname) []:bovin← 此时不输入
+EmailAddress []:bovin.phang@gmail.com ← 电子邮箱，可随意填
+Pleaseenter the following 'extra' attributes
+tobe sent with your certificate request
+Achallenge password []: ← 可以不输入
+An optionalcompany name []: ← 可以不输入
+```
+4. 备份一份服务器密钥文件：
+```shell
+[root@localhost ssl]# cp server.key server.key.org
+```
+
+
+5. 去除文件口令（在加载SSL支持的Nginx并使用上述私钥时除去必须的口令）：
+```shell
+[root@localhost ssl]# openssl rsa -in server.key.org -out server.key
+```
+注意到这边的key是nopassword的，就是重启nginx的时候，不需要输入密码。
+
+6. 生成证书文件（标记证书使用上述私钥和CSR）server.crt：
+```shell
+[root@localhost ssl]# openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+```
+
+#### 受浏览器信任的免费SSL证书：
+
+生成一个权威的ssl证书对（如果自己颁发的话，那么https是不被浏览器认可的，就是https上面会有一个大红叉）
+
+由于可信的证书颁发机构(CA机构)只有那么几家，所以必须要从他们那里获取或者购买。下面列出一些受浏览器信任的免费SSL证书：
+
+1. **腾讯云（网址：**https://console.qcloud.com/ssl**，公司名：腾讯）**
+2. **StartSSL（网址：**http://www.startssl.com**，公司名：StartCom）**
+
+​       **StartSSL的操作教程：**http://www.freehao123.com/startssl-ssl/
+
+3. **Let's Encrypt（网址：**https://letsencrypt.org**，公司名：Let’s Encrypt）**
+
+​       **Let's Encrypt 证书生成详见：** https://certbot.eff.org/#centos6-nginx
+
+#### 配置Nginx
+
+```shell
+[root@localhost src]# vi /usr/local/nginx/conf/vhosts/webrtc_richinfo_cn.conf
+```
+新建配置文件加入如下内容：
+```shell
+
+upstream roomserver {
+        server 192.168.9.223:8080;
+}
+server {
+        listen 80 ;
+        server_name 192.168.9.223;
+        return 301 https://$server_name$request_uri;
+}
+
+server {
+        #listen       80;
+        #listen 127.0.0.1:80 default;
+        #listen 80 default;
+        listen 443 ssl;
+        server_name  webrtc.richinfo.cn richinfo.cn 192.168.9.223;
+
+        root  /var/www/root/webrtc_richinfo_cn;
+
+        #ssl  on;
+        ssl_certificate      /usr/local/nginx/conf/ssl/server.crt;
+        ssl_certificate_key  /usr/local/nginx/conf/ssl/server.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+
+        #ssl_protocols  SSLv2 SSLv3 TLSv1;
+        #ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        autoindex on;
+
+
+        autoindex_exact_size off;
+
+
+        autoindex_localtime on;
+
+        #charset koi8-r;
+
+
+        server_tokens off;
+
+
+        error_log  /var/www/logs/webrtc_richinfo_cn/error.log  notice;
+        access_log  /var/www/logs/webrtc_richinfo_cn/access.log combined;
+
+        location / {
+            index  index.html index.htm index.php;
+            #proxy_pass http://192.168.9.223:8080;
+            proxy_pass http://roomserver$request_uri;
+            proxy_set_header Host $host;
+        }
+
+        #error_page  404              /404.html;
+        error_page 404 = /404_page/;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root  /var/www/root/webrtc_richinfo_cn;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+
+               #location ~ .*\.(php|php5)?$ {
+                          #fastcgi_pass  unix:/tmp/php-cgi.sock;
+                          #fastcgi_index index.php;
+                          #include fcgi.conf;
+               #}
+
+
+        location ~ .*\.(php|php5|shtml)?$ {
+            #root           html;
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            #fastcgi_param  HTTPS   on;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+            #include        fastcgi.conf;
+        }
+
+        location /status {
+            stub_status on;
+            access_log   off;
+        }
+
+       location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+       {
+           access_log off;
+           log_not_found off;
+           #expires max;
+           expires 30d;
+       }
+
+       location ~ .*\.(js|css)?$
+       {
+           access_log off;
+           log_not_found off;
+           expires 1h;
+       }
+
+    }
+```
+
+#### 
