@@ -480,8 +480,8 @@ ERROR    2017-10-19 04:15:39,486 wsgi.py:263]
 [root@localhost src]# firewall-cmd --zone=public --add-port=3478/tcp --permanent #用于 ICE Server
 [root@localhost src]# firewall-cmd --zone=public --add-port=3478/udp --permanent #用于 ICE Server
 [root@localhost src]# firewall-cmd --zone=public --add-port=8000/tcp --permanent #用于 Room admin server
-[root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent #用于 Room Server
-[root@localhost src]# firewall-cmd --zone=public --add-port=8089/tcp --permanent #用于 Signal Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent #用于 Room Server，提供 HTTP 服务
+[root@localhost src]# firewall-cmd --zone=public --add-port=8089/tcp --permanent #用于 Signal Server，Collider 服务的端口，提供 WebSocket 服务。
 [root@localhost src]# firewall-cmd --zone=public --add-port=49152-65535/tcp --permanent #用于 TURN/STUN Server
 [root@localhost src]# firewall-cmd --reload   #重启防火墙，使开启的端口生效
 [root@localhost src]# firewall-cmd --permanent --query-port=80/tcp  #查询是否已开启的80端口
@@ -625,7 +625,11 @@ $GOPATH 目录约定有三个子目录：
 [root@localhost src]# ps -ef |grep collidermain
 ```
 
-注：-tls=true，表示需要证书。这里指定端口为8089，因为其默认是443，而nginx监听的ssl默认端口也为443，会造成冲突。
+注：
+
+-port = 表示 collider 监听的端口。我们这里用 8089。如果有防火墙，记得打开，如果在内网，记得在路由器上做映射。
+-room-server = 表示 AppRTC 可访问的 URL。如果使用了非标准端口（80、443），则务必写好端口号。
+-tls=true，表示需要证书。这里指定端口为8089，因为其默认是443，而nginx监听的ssl默认端口也为443，会造成冲突。tls表示是否使用tls加密通信，如果为false，则之后客户端进行通信的时候，服务器需要是http开头。如果tls选项为true，则客户端通信时，服务器地址需要是https。
 
 #### 测试
 
@@ -861,7 +865,7 @@ mobility
 no-cli
 ```
 
-（查看[turnserver.conf文件详解](./turnserver.conf_introduction.md) ）
+（查看[turnserver.conf文件详解](../turnserver.conf_introduction.md) ）
 
 #### 启动coturn服务器
 
@@ -973,13 +977,22 @@ Stateor Province Name (full name) []:Guangdong ←省的全名，拼音
 LocalityName (eg, city) [Default City]:Shenzhen ←市的全名，拼音
 OrganizationName (eg, company) [Default Company Ltd]:Richinfo Corp. ← 公司英文名
 OrganizationalUnit Name (eg, section) []:front-end ←可以不输入
-CommonName (eg, your name or your server's hostname) []:bovin← 此时不输入
+CommonName (eg, your name or your server's hostname) []:192.168.9.223 ← 可以不输入
 EmailAddress []:bovin.phang@gmail.com ← 电子邮箱，可随意填
 Pleaseenter the following 'extra' attributes
 tobe sent with your certificate request
 Achallenge password []: ← 可以不输入
 An optionalcompany name []: ← 可以不输入
 ```
+注：一般情况下，证书只支持域名访问，要使其支持IP地址访问，需要修改配置文件openssl.cnf。
+
+​         在Redhat7系统中，文件所在位置是/etc/pki/tls/openssl.cnf。在其中的[ v3_ca]部分，添加subjectAltName选项：
+
+```shell
+[ v3_ca ]  
+subjectAltName = IP:192.168.9.223 
+```
+
 4. 备份一份服务器密钥文件：
 ```shell
 [root@localhost ssl]# cp server.key server.key.org
