@@ -13,6 +13,7 @@
 3. [EasyRTC Open Source应用架构图](#Application-Architecture-Diagram)
 4. [安装](#install)
 5. [有用的术语](#Useful-Terminology)
+6. [你的第一个应用程序](#Your-First-App)
 
 
 ## <a name='What-Is-EasyRTC-OpenSource'>一、什么是EasyRTC OpenSource</a>
@@ -141,3 +142,110 @@ EasyRTC消除了开始使用WebRTC的痛苦，其有以下很酷的特征：
 - Easyrtcid：EasyRTC服务器上某个peer的唯一ID。
 
 - Call（呼叫）：作为动词，表示与另一个点建立连接的行为，以便媒体流或数据可以被发送。 作为名词，表示有一个点对点连接的状态。
+
+## <a name='Your-First-App'>六、你的第一个应用程序</a>
+
+我们简单的浏览器应用程序将遵循简单音视频演示的模型，其中包括两个部分：一个HTML文件，其定义一些用于显示媒体流的HTMLVideoObjects，以及一些用于启动呼叫的按钮。还有一个关于程序逻辑的JavaScript文件。
+
+**HTML代码如下所示：**
+
+```html
+<!DOCTYPE html>
+  <html>
+      <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+          <title>MyFirst app</title>
+          <link rel="stylesheet" type="text/css" href="/easyrtc/easyrtc.css" />
+          <script src="/socket.io/socket.io.js"></script>
+          <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
+          <script type="text/javascript" src="MyFirstApp.js"></script>
+          <style>
+              video {
+                       width:320px;
+                       height:240px;
+                    }
+              .divHolder {
+                    position:relative;
+                    float:left; 
+                    background-color: blue;
+                    margin: 1px;
+                    }
+          </style>
+      </head>
+      <body>
+          <button onclick = "connect();"> Connect to server</button>
+          <div id="otherClients">Peers:</div>
+          <div>
+              <div class="divHolder">
+                <video autoplay="autoplay" class="easyrtcMirror" id="selfVideo" muted="muted" volume="0" ></video>
+              </div>
+
+              <div class="divHolder">
+                <video autoplay="autoplay" id="callerVideo1"></video>
+              </div>
+
+              <div class="divHolder">
+                <video autoplay="autoplay" id="callerVideo2"></video>
+              </div>
+
+              <div class="divHolder">
+                <video autoplay="autoplay" id="callerVideo3"></video>
+              </div>
+          </div>
+      </body>
+  </html>
+```
+
+首先您会注意到对/easyrtc/easyrtc.css和/easyrtc/easyrtc.js的引用。 easyrtc.css和easyrtc.js这两文件实际上是位于api文件夹中的，但服务器已设置将/ easyrtc映射到api文件夹中。
+
+easyrtc.js文件包含基本的Easyrtc方法和Easyrtc_App方法。 easyrtc.css文件包含制作视频镜像及定位视频上方的“close call”图标的css定义。 socket.io.js文件提供了与服务器的websocket通信。 MyFirstAp.js文件是我们的应用程序代码。
+
+“connect()”方法将用于启动到服务器的连接。
+
+id为“otherClients”的div将作为呼叫其它peer的按钮的容器。
+
+包含每个视频对象的div是在其所包含的视频对象上定位“关闭呼叫”图标的结构的一部分。
+
+**我们需要编写的JavaScript如下所示：**
+
+```javascript
+  function connect() {
+      easyrtc.setRoomOccupantListener(convertListToButtons);
+      easyrtc.easyApp("easyrtc.audioVideoSimple", "selfVideo", 
+          ["callerVideo1", "callerVideo2", "callerVideo3"],
+                      loginSuccess, loginFailure);
+  }
+
+  function convertListToButtons (roomName, data, isPrimary) {
+      var otherClientDiv = document.getElementById('otherClients');
+      otherClientDiv.innerHTML = "";
+      for(var easyrtcid in data) {
+          var button = document.createElement('button');
+
+          button.onclick = function(easyrtcid) {
+              return function() {
+                  performCall(easyrtcid);
+              };
+          }(easyrtcid);
+
+          var label = document.createTextNode(easyrtcid);
+          button.appendChild(label);
+          otherClientDiv.appendChild(button);
+      }
+  }
+
+  function performCall(otherEasyrtcid) {
+      var successCB = function() {};
+      var failureCB = function() {};
+      easyrtc.call(otherEasyrtcid, successCB, failureCB);
+  }
+
+  function loginSuccess(easyrtcid) {
+      easyrtc.showError("none", "Successfully connected");
+  }
+
+  function loginFailure(errorCode, message) {
+      easyrtc.showError(errorCode, message);
+  }
+```
+

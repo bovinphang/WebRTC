@@ -9,7 +9,9 @@
 3. [特点](#features)
 4. [WebRTC架构图](#webrtc-structure)
 5. [WebRTC架构组件介绍](#component-introduction)
-6. [WebRTC核心模块API](#core-module-api)
+6. [WebRTC浏览器API](#web-api)
+7. [WebRTC核心模块API](#core-module-api)
+8. [Links](#Links)
 
 
 ## <a name='what-is-webrtc'>一、什么是WebRTC？</a>
@@ -125,7 +127,166 @@ PS：VoiceEngine是WebRTC极具价值的技术之一，是Google收购GIPS公司
 ​	图像质量增强模块
 ​	对网络摄像头采集到的图像进行处理，包括明暗度检测、颜色增强、降噪处理等功能，用来提升视频质量。
 
-## <a name='core-module-api'>六、WebRTC核心模块API</a>
+## <a name='web-api'>六、WebRTC浏览器API</a>
+
+WebRTC实现了多个Web API接口，其中三个主要的Web API分别是:
+
+- **[MediaStream](https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-mediastream)：**通过MediaStream的API能够通过设备的摄像头及话筒获得视频、音频的同步流。
+- **[RTCPeerConnection](https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-rtcpeerconnection)：**RTCPeerConnection是WebRTC用于构建点对点之间稳定、高效的流传输的组件。
+- **[RTCDataChannel](https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-rtcdatachannel)：**RTCDataChannel使得浏览器之间（点对点）建立一个高吞吐量、低延时的信道，用于传输任意数据。
+
+这里大致介绍一下这三个API：
+
+#### (1)、MediaStream (aka getUserMedia)
+
+MediaStream API为WebRTC提供了从设备的摄像头、话筒获取视频、音频流数据的功能.
+
+##### W3C标准
+
+详见：https://w3c.github.io/mediacapture-main/getusermedia.html
+
+##### 如何调用？
+
+可以通过`navigator.getUserMedia()`这个方法来调用，这个方法接受三个参数：
+
+1. 一个约束对象（constraints object），这个后面会单独讲。
+2. 一个调用成功的回调函数，如果调用成功，传递给它一个流对象。
+3. 一个调用失败的回调函数，如果调用失败，传递给它一个错误对象。
+
+##### 浏览器兼容性处理
+
+由于浏览器实现不同，他们经常会在实现标准版本之前，在方法前面加上前缀，所以一个兼容版本就像这样：
+
+```javascript
+var getUserMedia = (navigator.getUserMedia || 
+                    navigator.webkitGetUserMedia || 
+                    navigator.mozGetUserMedia || 
+                    navigator.msGetUserMedia);
+```
+
+##### 一个超级简单的例子
+
+这里写一个超级简单的例子，用来展现getUserMedia的效果：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>GetUserMedia实例</title>
+</head>
+<body>
+    <video id="video" autoplay></video>
+</body>
+
+<script type="text/javascript">
+    var getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+
+    getUserMedia.call(navigator, {
+        video: true,
+        audio: true
+    }, function(localMediaStream) {
+        var video = document.getElementById('video');
+        video.src = window.URL.createObjectURL(localMediaStream);
+        video.onloadedmetadata = function(e) {
+            console.log("Label: " + localMediaStream.label);
+            console.log("AudioTracks" , localMediaStream.getAudioTracks());
+            console.log("VideoTracks" , localMediaStream.getVideoTracks());
+        };
+    }, function(e) {
+        console.log('Rejected!', e);
+    });
+</script>
+
+
+</html>
+```
+
+将这段内容保存在一个HTML文件中，放在服务器上。用较新版本的Opera、Firefox、Chrome打开，在浏览器弹出询问是否允许访问摄像头和话筒，选同意，浏览器上就会出现摄像头所拍摄到的画面了.
+
+注意，HTML文件要放在服务器上，否则会得到一个NavigatorUserMediaError的错误，显示PermissionDeniedError。
+
+这里使用**getUserMedia**获得流之后，需要将其输出，一般是绑定到**video**标签上输出，需要使用**window.URL.createObjectURL(localMediaStream)**来创造能在video中使用src属性播放的Blob URL，注意在video上加入autoplay属性，否则只能捕获到一张图片
+
+流创建完毕后可以通过**label**属性来获得其唯一的标识，还可以通过**getAudioTracks()**和**getVideoTracks()**方法来获得流的追踪对象数组（如果没有开启某种流，它的追踪对象数组将是一个空数组）
+
+##### 约束对象(Constraints)
+
+约束对象可以被设置在getUserMedia()和RTCPeerConnection的addStream方法中，这个约束对象是WebRTC用来指定接受什么样的流的，其中可以定义如下属性：
+
+- video: 是否接受视频流
+- audio：是否接受音频流
+- MinWidth: 视频流的最小宽度
+- MaxWidth：视频流的最大宽度
+- MinHeight：视频流的最小高度
+- MaxHiehgt：视频流的最大高度
+- MinAspectRatio：视频流的最小宽高比
+- MaxAspectRatio：视频流的最大宽高比
+- MinFramerate：视频流的最小帧速率
+- MaxFramerate：视频流的最大帧速率
+
+#### (2)、RTCPeerConnection
+
+WebRTC使用RTCPeerConnection来在浏览器之间传递流数据，这个流数据通道是点对点的，不需要经过服务器进行中转。但是这并不意味着我们能抛弃服务器，我们仍然需要它来为我们传递信令（signaling）来建立这个信道。WebRTC没有定义用于建立信道的信令的协议：信令并不是RTCPeerConnection API的一部分。
+
+##### 信令
+
+既然没有定义具体的信令的协议，我们就可以选择任意方式（AJAX、WebSocket），采用任意的协议（SIP、XMPP）来传递信令，建立信道。比如可以使用node的ws模块，在WebSocket上传递信令。
+
+需要信令来交换的信息有三种： 
+
+- session的信息：用来初始化通信还有报错 
+- 网络配置：比如IP地址和端口啥的 
+- 媒体适配：发送方和接收方的浏览器能够接受什么样的编码器和分辨率
+
+这些信息的交换应该在点对点的流传输之前就全部完成，一个大致的架构图如下： 
+
+![JSEP architecture](./images/jsep.png)
+
+​										**JSEP architecture**
+
+##### 通过服务器建立信道
+
+这里再次重申，就算WebRTC提供浏览器之间的点对点信道进行数据传输，但是建立这个信道，必须有服务器的参与。WebRTC需要服务器对其进行四方面的功能支持：
+
+1. 用户发现以及通信；
+2. 信令传输；
+3. NAT/防火墙穿越；
+4. 如果点对点通信建立失败，可以作为中转服务器。
+
+##### NAT/防火墙穿越技术
+
+建立点对点信道的一个常见问题，就是NAT穿越技术。在处于使用了NAT设备的私有TCP/IP网络中的主机之间需要建立连接时需要使用NAT穿越技术。以往在VoIP领域经常会遇到这个问题。目前已经有很多NAT穿越技术，但没有一项是完美的，因为NAT的行为是非标准化的。这些技术中大多使用了一个公共服务器，这个服务使用了一个从全球任何地方都能访问得到的IP地址。在RTCPeeConnection中，使用ICE框架来保证RTCPeerConnection能实现NAT穿越。
+
+ICE，全名叫交互式连接建立（Interactive Connectivity Establishment）,一种综合性的NAT穿越技术，它是一种框架，可以整合各种NAT穿越技术如STUN、TURN（Traversal Using Relay NAT 中继NAT实现的穿透）。ICE会先使用STUN，尝试建立一个基于UDP的连接，如果失败了，就会去尝试TCP（先尝试HTTP，然后尝试HTTPS），如果依旧失败ICE就会使用一个中继的TURN服务器。
+
+我们可以使用Google的STUN服器：**stun:stun.l.google.com:19302**，于是乎，一个整合了ICE框架的架构应该长这个样子 ：
+
+![Finding connection candidates](./images/stun.png)
+​                                                                 **Finding connection candidates**
+
+
+
+![WebRTC data pathways](./images/dataPathways.png)
+​                                                                           **WebRTC data pathways**
+
+
+
+##### 浏览器兼容处理
+
+还是前缀不同的问题，采用和上面类似的方法：
+
+```javascript
+var PeerConnection = (window.PeerConnection ||
+                    window.webkitPeerConnection00 || 
+                    window.webkitRTCPeerConnection || 
+                    window.mozRTCPeerConnection);
+```
+
+
+
+
+## <a name='core-module-api'>七、WebRTC核心模块API</a>
 
 #### (1)、网络传输模块：libjingle
 
@@ -184,3 +345,51 @@ WebRTC重用了libjingle的一些组件，主要是network和transport组件，�
 | **ViENetwork**       | vie_network.h        | Adds send and receive functionality, external transport, port and address filtering, Windows QoS support, packet timeout notification and changes to network settings. |
 | **ViERender**        | vie_render.h         | Adds rendering functionality.            |
 | **ViERTP_RTCP**      | vie_rtp_rtcp.h       | Adds support for RTCP reports, SSRS handling RTP/RTCP statistics, NACK/FEC, keep-alive functionality and key frame request methods. |
+
+
+
+## <a name='Links'>Links</a>
+
+###Specifications:
+* WebRTC 1.0: Real-time Communication Between Browsers：https://www.w3.org/TR/webrtc/
+* Media Capture and Streams：https://w3c.github.io/mediacapture-main/
+* Media Capture from DOM Elements：https://w3c.github.io/mediacapture-fromelement/
+
+###Getting started:
+WebRTC官方网站：https://webrtc.org/start/
+
+###Tutorials:
+https://www.html5rocks.com/en/tutorials/webrtc/basics/
+
+###WebRTC API:
+https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API
+
+###WebRTC codelab:
+A step-by-step guide that explains how to build a complete video chat app, including a simple signaling server.  https://www.bitbucket.org/webrtc/codelab
+
+###Javascript frameworks
+1. Video chat:
+  * https://github.com/andyet/SimpleWebRTC
+  * https://github.com/priologic/easyrtc
+  * https://github.com/webRTC-io/webRTC.io
+
+2. Peer-to-peer data:
+  * http://peerjs.com/
+  * https://github.com/peer5/sharefest
+
+###Demos:
+https://webrtc.github.io/samples/
+
+###WebRTC提供商:
+1. 国外:
+  * https://xirsys.com
+  * https://tokbox.com/developer/
+  * https://cloud.aculab.com/documents/webrtcdemo
+  * https://www.twilio.com/webrtc
+  * http://www.frafos.com/webrtc/
+  * http://www.sightcall.com/
+2. 国内:
+  * 融云：http://www.rongcloud.cn/
+  * 亲加云：http://www.gotye.com.cn/
+  * 环信：https://www.easemob.com/
+
