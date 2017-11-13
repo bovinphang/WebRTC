@@ -264,4 +264,6 @@ id为“otherClients”的div将作为呼叫其它peer的按钮的容器。
 
 convertListToButtons函数为服务器已知的每个peer生成一个按钮。每个按钮都有一个回调函数，用于生成对特定peer的调用。
 
-performCall方法需要传递一个easyrtcid参数并请求对它的呼叫。
+performCall方法需要传递一个easyrtcid参数并请求对它的呼叫。当呼叫建立并且从当前peer接收到远程流媒体时，回调（由easyApp的方法隐式设置）将把该流媒体附加到第一个可用视频对象。我们通过初始化连接的easyApp方法来设置回调;其中一个回调会将从peer接收到的流媒体附加到空闲的视频对象中，而另一个回调则在关联的流媒体结束时清除视频对象。
+
+这个应用程序只涉及到EasyRTC API的皮毛，更多使用方法请参阅EasyRTC API手册。

@@ -970,6 +970,10 @@ https://webrtc.github.io/samples/
 
 https://www.webrtc-experiment.com/
 
+https://webcamtoy.com/zh/app/
+
+https://idevelop.ro/ascii-camera/
+
 ### 11. 8 WebRTC服务提供商:
 1. 国外:
   * https://xirsys.com
