@@ -44,7 +44,7 @@
 3. coTurn - 防火墙打洞(内网穿透)服务器(STUN/TURN/ICE Server)   https://github.com/coturn/coturn
   ​      我们目前大部分人连接互联网时都处于防火墙后面或者配置私有子网的家庭(NAT)路由器后面,这就导致我们的计算机的IP地址不是广域网IP地址,故而不能相互之间直接通讯。 正因为这样的一个场景,我们得想办法去穿越这些防火墙或者家庭(NAT)路由器,让两个同处于私有网络里的计算机能够通讯起来。
 
-  ![NAT Network](./images/nat-network.png)
+  ![NAT Network](../../images/nat-network.png)
 
   ​     STUN(Simple Traversal of UDP over NATs,NAT 的UDP简单穿越); STUN协议服务器就是用来解决这些问题:
 

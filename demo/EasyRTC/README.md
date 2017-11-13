@@ -4,6 +4,10 @@
 
 这个套件基于HTML5和JavaScript实现，包含了EasyRTC服务器的安装和客户端API，运行于Node环境，支持在线多人视频，语音，文本信息发送等功能。
 
+Editor: PengBaowen (November 2017 )
+
+文章在线阅读：https://github.com/bovinphang/WebRTC/tree/master/demo/EasyRTC
+
 
 ## <a name='toc'>目录</a>
 
@@ -16,7 +20,9 @@
 6. [你的第一个应用程序](#Your-First-App)
 
 
-## <a name='What-Is-EasyRTC-OpenSource'>一、什么是EasyRTC OpenSource</a>
+
+
+## <a name='What-Is-EasyRTC-OpenSource'>1. 什么是EasyRTC OpenSource</a>
 
 EasyRTC OpenSource是：
 
@@ -25,7 +31,7 @@ EasyRTC OpenSource是：
 
 总之，这两个组件可以让你用几行简单的代码编写一个简单的视频会议应用程序或文件共享应用程序等等。
 
-## <a name='Features'>二、特征</a>
+## <a name='Features'>2. 特征</a>
 
 EasyRTC消除了开始使用WebRTC的痛苦，其有以下很酷的特征：
 
@@ -36,16 +42,18 @@ EasyRTC消除了开始使用WebRTC的痛苦，其有以下很酷的特征：
 5. 服务器和客户端的单一语言（JavaScript）。EasyRTC 代码示例有助于缩短学习曲线，并让你快速掌握WebRTC的应用。
 6. 免费开放源码。EasyRTC在BSD 2开源许可协议下运作，这意味着它的源代码是完全免费开放的，不用支付任何费用或其他隐藏费用。
 
-## <a name='Application-Architecture-Diagram'>三、EasyRTC Open Source应用架构图</a>
+## <a name='Application-Architecture-Diagram'>3. EasyRTC Open Source应用架构图</a>
 
 ![应用架构图](./images/Architecture-Diagram.png)
 
 
-## <a name='install'>四、安装</a>
+## <a name='install'>4. 安装</a>
 
 安装一个EasyRTC服务器到你的工作站中（无论是台式机或笔记本电脑）是非常快速和简便的。在同一工作站中运行EasyRTC客户端也无需使用繁琐的SSL证书。这对于测试你的客户端应用程序和其他设备一起运行情况将是非常有用的；而运行在Chrome浏览器中的 WebRTC客户端是不能访问摄像头或麦克风的，除非它们是架构在SSL服务器或在同一台机器上（这是浏览器的安全约束）。
 
 #### 安装EasyRTC
+
+此处以在CentOS 7系统的安装过程为例。
 
 1. 安装最新版本的[Node.js](https://nodejs.org/)(若已安装，略过此步骤)：
 
@@ -128,7 +136,7 @@ EasyRTC消除了开始使用WebRTC的痛苦，其有以下很酷的特征：
 - 在摄像头前面抬起左手，并考虑哪个视频窗格看起来是正确的。
 - 在摄像头前面保留一些打印的文本，并考虑哪个视频窗格看起来是正确的。
 
-## <a name='Useful-Terminology'>五、有用的术语</a>
+## <a name='Useful-Terminology'>5. 有用的术语</a>
 
 - Video track（视频轨道）：表示单个视频或等效设备输出的对象
 - Audio track（音频轨道）：表示单个麦克风或同等设备输出的对象
@@ -143,7 +151,7 @@ EasyRTC消除了开始使用WebRTC的痛苦，其有以下很酷的特征：
 
 - Call（呼叫）：作为动词，表示与另一个点建立连接的行为，以便媒体流或数据可以被发送。 作为名词，表示有一个点对点连接的状态。
 
-## <a name='Your-First-App'>六、你的第一个应用程序</a>
+## <a name='Your-First-App'>6. 你的第一个应用程序</a>
 
 我们简单的浏览器应用程序将遵循简单音视频演示的模型，其中包括两个部分：一个HTML文件，其定义一些用于显示媒体流的HTMLVideoObjects，以及一些用于启动呼叫的按钮。还有一个关于程序逻辑的JavaScript文件。
 
@@ -249,3 +257,11 @@ id为“otherClients”的div将作为呼叫其它peer的按钮的容器。
   }
 ```
 
+这个connect方法做了两件事情：
+
+- 设置了一个回调函数，只要连接到服务器的peer列表发生更改时，就会调用该回调函数。
+- 发起一个到easyrtc服务器的连接，同时创建播放流媒体视频对象的列表。
+
+convertListToButtons函数为服务器已知的每个peer生成一个按钮。每个按钮都有一个回调函数，用于生成对特定peer的调用。
+
+performCall方法需要传递一个easyrtcid参数并请求对它的呼叫。
