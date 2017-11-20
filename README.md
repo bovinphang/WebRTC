@@ -16,19 +16,22 @@ Editor: PengBaowen (November 2017 )
 2. [WebRTC浏览器兼容情况](#nodejs-install)
 3. [WebRTC的目标](#aims)
 4. [WebRTC应用场景](#application-scenarios)
-5. [WebRTC的优缺点](#advantages-and-disadvantages)
+5. [WebRTC标准之父谈WebRTC](#Daniel-C-Burnett-talk)
 6. [业内对WebRTC的看法](#industry-view-of-WebRTC)
 7. [WebRTC现在处于什么发展阶段？](#stage-of-development)
 8. [WebRTC的发展趋势](#development-trend)
-9. [WebRTC 的核心组件](#core-component)
-10. [WebRTC架构图](#webrtc-structure)
-11. [WebRTC架构组件介绍](#component-introduction)
-12. [WebRTC浏览器API](#web-api)
-13. [WebRTC信令交换](#signaling-server)
-14. [WebRTC点对点通信](#peer-to-peer)
-15. [WebRTC核心模块API](#core-module-api)
-16. [WebRTC实现多方会话](#multi-party-conversation)
-17. [有用的链接](#Links)
+9. [WebRTC方案在多方实时音视频的应用及局限性](#multi-party-conversation)
+10. [业内哪些App在使用WebRTC？](#who-use-WebRTC)
+11. [WebRTC的优缺点](#advantages-and-disadvantages)
+12. [直播领域所用协议的现状及其优缺点比较](#protocols-advantages-and-disadvantages)
+13. [WebRTC 的核心组件](#core-component)
+14. [WebRTC架构图](#webrtc-structure)
+15. [WebRTC架构组件介绍](#component-introduction)
+16. [WebRTC浏览器API](#web-api)
+17. [WebRTC信令交换](#signaling-server)
+18. [WebRTC点对点通信](#peer-to-peer)
+19. [WebRTC核心模块API](#core-module-api)
+20. [有用的链接](#Links)
 
 
 
@@ -86,57 +89,75 @@ WebRTC的点对点方式能够运用在很多场景：
 - 金融服务
 - 其它即时通信业务
 
-**应用案例：**
+## <a name='Daniel-C-Burnett-talk'>5. WebRTC标准之父谈WebRTC</a>
 
-必胜客已经使用WebRTC在Xbox Live上接受订单。Wendy’s也转向了这个领域，并宣布到2017年底其下15%的店面—大约1000家店面—都会配备自助点餐台。到2016年11月17号为止，麦当劳宣布的计划将数字自助服务扩展到全美的麦当劳餐厅。而这只是自动化进程在快餐业的起步而已。
+说明：以下内容整理自InfoQ的专访，kelly blacker加了一些注释。
 
-餐厅马上就会意识到尽管你可以将部分直面客户的服务替换为用户自助服务，但是想要替换实时的客户服务很困难。只要客户连入互联网，WebRTC就让顾客可以通过自助服务台直接地与客户服务人员进行实时的对话。如果有人对食物的过敏原存在问题，或者对菜品有自己的特殊要求，或者是一些残障人士并不想接收全自助服务，那么利用WebRTC直接联系客服人员就可以解决他们的需求。
+**问题1:**
 
-餐厅也可以用WebRTC来流水化进行后端操作。举个例子，区域经理可以使用WebRTC对生产线进行远端实时监控，确保经理和雇员都按照公共卫生规定做事，或者没有违反公司的规定。
+InfoQ：JavaScript 之父 Brendan Eich（Mozilla 前 CTO）曾说过，“WebRTC is a new front in the long war for an open and unencumbered web.”，您怎么理解他的这句话？
 
-连锁加盟商经常需要向所有雇员进行标准化的训练，日常培训，或者推出新的加工过程。想要紧急更换菜单？为什么不使用WebRTC来把旗下的加盟店都连接起来，然后用它下达统一的指令？这样一来所有的下游餐厅都会第一时间被通知到，然后就可以用视频来远端监控新菜单的落实情况了。
+Daniel C. Burnett：谷歌想把网页版应用的体验做的和 Native 应用一致，但是他们很快发现，谷歌自身的产品诸如 Google Docs、Gmail 等并没有解决通讯的问题，也就是说它们不能控制麦克风、摄像头以及人与人之间的通讯。
 
-## <a name='advantages-and-disadvantages'>5. WebRTC的优缺点</a>
+所以我同意 Brendan Eich 的说法，这对互联网和 Web 来说是一件大事。
 
-**优点：**
+**问题2:**
 
-1. 方便。对于用户来说，在WebRTC出现之前想要进行实时通信就需要安装插件和客户端，但是对于很多用户来说，插件的下载、软件的安装和更新这些操作是复杂而且容易出现问题的，现在WebRTC技术内置于浏览器中，用户不需要使用任何插件或者软件就能通过浏览器来实现实时通信。对于开发者来说，在Google将WebRTC开源之前，浏览器之间实现通信的技术是掌握在大企业手中，这项技术的开发是一个很困难的任务，现在开发者使用简单的HTML标签和JavaScript API就能够实现Web音/视频通信的功能。
-2. 跨平台。因为基于浏览器，所以可跨浏览器（浏览器支持WebRTC）和跨操作系统平台，windows、Linux、ios、 android......全部支持。
-3. P2P的优势。使用P2P技术处理数据（音频、视频和文件等）的传输，可减少服务器端的性能压力和带宽成本（这是有条件的，有些网络环境下可能无法使用P2P）
-4. 一整套的解决方案。从采集，编解码，RTP打包，流量控制，音频处理，多通道混音，都给于了很好的支持，并且是开源的代码，大大节省了开发时间和成本。
-5. 免费。虽然WebRTC技术已经较为成熟，其集成了最佳的音/视频引擎，十分先进的codec，但是Google对于这些技术不收取任何费用。
-6. 强大的打洞能力。WebRTC技术包含了使用STUN、ICE、TURN、RTP-over-TCP的关键NAT和防火墙穿透技术，并支持代理。
+InfoQ：据了解，WebRTC 联盟曾故意遗漏信令标准来避免冲突，但此举造成后来厂商使用各不相同的协议，包括 SIP、WebSockets 以及 HTTP 协议。您认为这个问题应该怎么解决？
 
-**缺点：**
+Daniel C. Burnett：我认为这是 W3C 做的最好的决定。有的厂商想强制把 SIP 作为浏览器通讯的信令，但是这样的话，你想用 XMPP 或者 Jingle 就不可能了。与其抄袭过时的电话网络用 SIP 协议，不如把这一部分留白，让大家自己选择何种实现。
 
-1. 编译WebRTC的源码就是一个比较大的挑战，搭建其复杂的编译环境往往会遇到很多意想不到的问题，导致当初计划用几个星期的时间来搞定项目，却发现几个星期连编译都没搞定。
+有人诟病 SIP 信令层的借口是 SIP 层没有很好的 JavaScript 库。显然这个说法是错误的，事实上有很多很好的 JavaScript 库可以用。
 
-2. WebRTC中很多的参数都是由GIPS公司的工程师们依靠经验所设定的值，这就会出现卡顿、延时、回声、丢包、多人视频不稳定等问题，并且由于公网的稳定性或机型适配等外在因素，以上问题在项目上线后会更加严重。
+所以如果你一定要用 SIP 做信令层，有很多很好的 JavaScript 库供你选择，但是你不会因此受限制，这才是互联网真正该有的样子。
 
-3. WebRTC缺乏服务器方案的设计和部署。
+blacker注释：从我们接触的这么多案例来看，信令完全没有必要统一，因为不同业务场景，不同系统用的的完全不一样，有的适合jason，有的适合xmpp，有的适合sip，等等）。
 
-4. 传输质量难以保证。WebRTC的传输设计基于P2P，难以保障传输质量，优化手段也有限，只能做一些端到端的优化，难以应对复杂的互联网环境。比如对跨地区、跨运营商、低带宽、高丢包等场景下的传输质量基本是靠天吃饭，而这恰恰是国内互联网应用的典型场景。
+**问题3:**
 
-5. WebRTC比较适合一对一的单聊，虽然功能上可以扩展实现群聊，但是没有针对群聊，特别是超大群聊进行任何优化。
+InfoQ：随着企业云通信市场的发展，许多厂商和开发者并没有等 WebRTC 最终定稿便投入到产品研发中，这对未来 WebRTC 标准的制定有哪些不利的影响？在您看来有没有像 Flash 之于 HTML4 那样的产品或者技术来促成 WebRTC 标准的制定？
 
-6. 设备端适配，如回声、录音失败等问题层出不穷。这一点在安卓设备上尤为突出。由于安卓设备厂商众多，每个厂商都会在标准的安卓框架上进行定制化，导致很多可用性问题（访问麦克风失败）和质量问题（如回声、啸叫）。
+Daniel C. Burnett：早期吃螃蟹的人，他们的反馈对 WebRTC 标准的制定也是至关重要的，这对未来标准的制定是很有帮助的。互联网本来就是快速迭代的过程，产品要不断试错，我们 WebRTC 标准的制定也遵循这样的规律。
 
-7. 对Native开发支持不够。WebRTC顾名思义，主要面向Web应用，虽然也可以用于Native开发，但是由于涉及到的领域知识（音视频采集、处理、编解码、实时传输等）较多，整个框架设计比较复杂，API粒度也比较细，导致连工程项目的编译都不是一件容易的事。
+HTML5 的多媒体标准分好几部分，WebRTC 是其中的一部分。一个好消息是，WebRTC 的标准制定比较超前，很多 HTML5 其他工作组的标准制定者对这一方面的工作十分关心，最终的结果是 HTML5 和 WebRTC 会很好地共存，两者之间的沟通其实是无缝的。举个例子好了，目前 HTML5 标准里没有很好地定义音频应该输出到麦克风还是扬声器，现在 WebRTC 已经作出了一些可选择的方案，HTML5 和 WebRTC 正在密切协作以改进这个标准，其结果是二者会很相似，于开发者而言将不再会面临两种标准的困扰。
 
-     ​	总而言之，WebRTC虽然提供了一套音视频实时通讯的解决方案，但是在实际应用中，由于网络传输、设备适配以及多方通话上都存在很多问题，效果并不理想。
+**问题4:**
 
-     ​	由此可见，WebRTC是一个优缺点兼有的技术，在拥有诱人的优点的同时，其缺点也十分的严重。在进行WebRTC的开发之前，请根据自身的情况来决定是自主开发还是使用第三方SDK。目前在市场上有很多第三方的音视频SDK可供选择，比如声网、腾讯、Intel、天翼RTC、网易云信、环信、融云、anychat等等，虽然这么多厂商提供的服务都大同小异，但他们的技术架构可能完全不同，比如天翼RTC是WebRTC SDK，腾讯是Native SDK。
+InfoQ：开发者对实现通信受既有概念的束缚是对 WebRTC 和云通信的真实挑战，比如企业中的电话会议依然是很受信赖的形式。怎么改变这种局面？
 
-        由于WebRTC的复杂性和尚未完善性，下面的这些建议结合自己的实际参考：
+Daniel C. Burnett：有些协议和标准的制定者认为，标准或者说规范越少、越简单越好。但 WebRTC 标准制定者认为还是应该稍微多给定一些标准和规范，于是我们多给了一些，但这多给出的部分依然不够，这也是为什么我写了《WebRTC权威指南》这本书。
 
-         1. 音视频不是公司的核心方向，建议使用第三方SDK。
-         2. 项目时间紧，有多人视频场景，使用场景依赖于手机端，建议使用第三方SDK。
-         3. 公司没人音视频技术人才，建议使用第三方SDK或者技术外包。
-         4. 如果公司实力、财力、人力雄厚，时间也不紧急，可考虑WebRTC集成开发，虽然会有很多坑，但总是能填平的。
-         5. 如果音视频技术是公司的核心方向，但不想花太多时间去研究WebRTC，可直接找熟悉WebRTC的人来培训。
-         6. 项目时间不紧急、没有多人视频需求且音视频质量要求不高，可考虑WebRTC集成开发。
+WebRTC 的目的就是打破常规的人们对电话的固有认识，把人和人之间的互动、沟通加入到人们日常工作流、任意的APP当中；而不是在这个APP中内置一个电话功能，这种思想是错误的。正确的思想是，通讯应该是一种功能，而不是一种应用。也就是说，让打电话不再只是打电话，他就是人与人之间自然的交流。比如，电话不再是一个物理的设备，现在的智能可穿戴设备将来都有可能取代打电话这件事，而且未来的通讯不止是人跟人之间，有可能是人跟物之间发生。
 
+王骅补充：再比如，视频通讯不应该被视为“我能看到你的脸”，人们看到的可能是一个大的数据流——通过大数据的挖掘，你的心跳、体温、脸色等等都可以通过摄像头传输过来。这跟传统的电话的模式有根本的区别。
 
+**问题5:**
+
+InfoQ：在从事 WebRTC 开发的厂商中，与运营商合作是一个选择，打造更强大的 SDK 和更富弹性的服务也是一种选择。您怎么评价这两种策略的未来发展？您对 WebRTC 技术在中国的发展有哪些期望？
+
+Daniel C. Burnett：我是 WebRTC 标准的制定者，对商业模式的话题并不方便也不适合回答（专业做学术的人，不想给商业做代言）。
+
+王骅：如果从市场的角度来看，提供 SDK 的公司只是给开发者提供了一种便利，因此很难生存。用户需要的是提供一个稳定、可靠的点对点通讯服务。以美国市场为例，现有的20多家提供 SDK 的厂商已经有7、8家被收购了，这种收购不是以大的价值被收购的，而是活不下去才不得不被收购。
+
+在国内市场方面，国内浏览器厂商都不大，很多厂商使用的都是同样的开源代码，我们很惊喜地发现有些代码写一遍在各家的浏览器上都可以运行。在微软慢慢往 WebRTC 这个方向靠拢之后市场方面的问题应该不大。这的确是一个比较对大家利好的事情，从运营商的角度来，他们主要是做基础建设和卖数据流，在这些数据上会衍生出很多公司和各种丰富的服务，最基本的可能是音视频服务，但远远不止这些。只要政策上面没有太多的干预，这个行业将会有很大的爆发。
+
+**问题6:**
+
+InfoQ：目前支持 WebRTC 的浏览器有 Chrome、Firefox、Opera 以及在此基础上的衍生产品。阻碍了 WebRTC 跨浏览器支持的因素有哪些？微软的 IE 浏览器（微软一直在推进自己的 WebRTC 版本）和苹果的 Safari 不支持 WebRTC 的主要原因是什么？
+
+Daniel C. Burnett：过去的几年里我被无数次问到这个问题。我不为微软和苹果工作，我很难知道他们是怎么想的。
+
+然而，微软在我们最初在讨论 WebRTC 标准的时候，Skype 里的确有一些有远见的人愿意参与，但是当时正值微软收购 Skype 时期，这些人都不能说话，因此微软没能参与进来；等收购结束他们能参与进来的时候，W3C 已经决定使用另外一套方案了。Skype 的人再想走另外一条道路的时候，已经基本不可能了，所以最终微软选择的是一个非标准的ORTC。
+
+最初微软推出 ORTC 是想跟 WebRTC 分庭抗礼，但从去年开始两边有了一定的沟通，在 WebRTC 1.0 版之后他们能互相兼容，慢慢在标准上会互相靠拢。微软的新浏览器 Edge 已经支持了 ORTC，有迹象标明微软会在 JavaScript 库方面与 WebRTC 做兼容，从这个角度来看很有可能未来 Chrome、IE、FireFox 会站在一起。
+
+至于苹果，没有人知道苹果到底要做什么直到他们 release。在过去的一年里，我们偶尔发现会有苹果的人来旁听了一下 WebRTC 的标准讨论。最近我们发现苹果在招聘 WebRTC 的开发岗位。所以大家还是很希望苹果能在兼容性方面能做点什么的。
+
+要猜大公司什么时候决定支持什么样的东西是很难的，但我认为谷歌、Mozilla 和微软都站在了一起，这对苹果来说是个威胁，苹果如果不参与进来，就有可能被孤立。苹果内部可能有一些考虑，这些我就不得而知了。
+
+blacker注释：1、我写文章说过ORTC后面迟早会和WebRTC统一；2、这样看下去，以后各家浏览器上支持WebRTC是迟早的事情，这东西确实有前途。
+
+王骅补充：亚马逊、思科、谷歌、英特尔、微软、Mozilla 和 Netflix 组建了开放媒体联盟，这对苹果会形成一定的压力，我们也希望看到苹果会支持 WebRTC。
 
 ## <a name='industry-view-of-WebRTC'>6. 业内对WebRTC的看法</a>
 
@@ -179,11 +200,7 @@ Wainhouse认为WebRtc是对UC的潜在破坏者。
 
 ![WebRTC and Enterprise Collaboration](./images/industry-view-Wainhouse.jpg)  
 
-**腾讯(Tencent)**  
 
- 腾讯的QQ还在使用GIPS方案（WebRTC的核心源于GIPS），而微信也已大量使用WebRTC组件。
-
-![Tencent](./images/industry-view-Tencent.png)
 
 ## <a name='stage-of-development'>7. WebRTC现在处于什么发展阶段？</a>
 
@@ -205,14 +222,186 @@ Wainhouse认为WebRtc是对UC的潜在破坏者。
 WebRTC是推动实时通信行业的一个主要技术，展望未来，网络通信会是一个怎样的发展趋势？
 
 - WebRTC应用最大的市场是：客户服务和某些垂直行业（医疗和教育行业领跑）
+
 - 企业开始大量储备WebRTC开发人才。
+
 - 直播在2016年增长了70%，2017年保持了强劲的增长势头，社交类的大企业会倾向在这方面投入更大的资源。
+
 - 进入CPaaS（Communications-platform-as-a-service）市场有很多种方式，其中一种就是通过以声网http://Agora.io为代表的专门提供实时API供应商，也有其他一些基础云服务平台如腾讯，或以短信为核心产品的云通讯平台如Twilio也加入到这个行列。专门的API供应商出现极大降低了开发者对实时通信技术的使用门槛，也推动了实时通信技术在更多行业的应用，如直播连麦、游戏语音等等，当然也极大推动了实时互联网行业的快速发展，API经济将是互联网大趋势。
+
 - 更多垂直行业将会有更多音视频通信的有趣应用场景。
 
-  ​总有一天，WebRTC的应用技术，会变得像web开发一样普及。届时，WebRTC或者RTC API将会是web开发人员最常用的工具之一。
+  总有一天，WebRTC的应用技术，会变得像web开发一样普及。届时，WebRTC或者RTC API将会是web开发人员最常用的工具之一。
 
-## <a name='core-component'>9. WebRTC 的核心组件</a>
+## <a name='multi-party-conversation'>9. WebRTC方案在多方实时音视频的应用及局限性</a>
+
+实时音视频有两种会话方式，一种是点对点的，就是2个设备之间进行交流。就像2个人视频聊天这种场景的。另外一种是多方会话，就像视频会议这样的场景。
+
+### 9.1 WebRTC适合做视频直播或音视频会议吗？
+
+先说结论：**完全可以！**
+
+但是，凡事总有但是，**也没那么简单**。你以为调用几个Chrome的API就能直播了？too simple
+
+那正确的方法是什么呢？
+
+1. 你得有一个实现了WebRTC相关协议的客户端。比如Chrome浏览器。
+2. 架设一个类似MCU系统的服务器。（不知道MCU是什么？看这：[MCU（视频会议系统中心控制设备）](https://baike.baidu.com/item/MCU/3248422#viewPageContent)）
+
+第一步，用你的客户端，比如Chrome浏览器，通过WebRTC相关的媒体API获取图像及声音信源，再用WebRTC中的通信API将图像和声音数据发送到MCU服务器。如果你只是做着玩玩，完全可以直接用Chrome浏览器做你的直播客户端。把摄像头麦克风连上电脑之后，Chrome可以用相关的js的API获取到摄像头和麦克风的数据。缺点就是如果长时间直播，Chrome的稳定性堪忧，因为chrome这样运行24小时以上内存占用很厉害，而且容易崩溃。
+第二步，MCU服务器根据你的需求对图像和声音数据进行必要的处理，比如压缩、混音等。你可能要问，WebRTC可以直接在浏览器之间P2P地传输流，为什么还要有中转的MCU服务器？因为Chrome的功能很弱，视频的分辨率控制、多路语音的混音都做不了，所以需要MCU参与。**最重要的是，Chrome同时给6个客户端发视频流就很消耗资源了，所以你如果有超过10个用户收看的话，Chrome很容易崩溃。**
+第三步，需要看直播的用户，通过他们的Chrome浏览器，链接上你的MCU服务器，并收取服务器转发来的图像和声音流。
+
+所以，**这就要看你用的客户端是什么**。**如果你是想用浏览器，那WebRTC不是好方案。但如果你是用app，可以肯定回答：可以，而且强烈建议你基于WebRTC。**
+
+WebRTC使web浏览器通过简单的JavaScript api接口实现实时通信功能。在这方面基本已成事实上标准，正如上面写的，它成为标准不是新闻，不成为标准才是新闻。国内就有不少从事和WebRTC相关的开发者，像有的公司就基于WebRTC包做些修改、然后给其它开发者用、号称是视频聊天SDK。这样公司好多，但真正做大却有点难。我想有两个原因：Javascript的限制，浏览器的限制。
+
+**Javascript的限制。**Javascript是脚本语言，能有什么功能取决于实现它的虚拟机，也就是浏览器这个应用程序。由于受限，问题来了，人民群众的需求总是琳琅满目，你都能提供吗？举个例子，直播过程中，要让对方的头上自动加顶红帽子，——当然，修改浏览器代码让加个帽子不是难事，可谁又知道接下会发生什么，难道要一个改一个？聊天往往是娱乐，娱乐经常是没啥规矩。由于这限制，开发者用它时会有这看法：东西是很好，但总是有那么点不足，而且即使是努力了也不可能解决（自个写浏览器除外）。
+
+**浏览器的限制。**这就要涉及到聊天场景。很现实问题，如果我想和你聊天，身边有手机，你认为会用浏览器吗？对PC，网页比app方便，而移动设备却有点反着来，而且将来移动设备会越来越多。关于这个再深入个问题：如果PC用浏览器，手机用app，聊天是否可行？技术实现上没问题，可事实上基本不会做，代价太高划不来。浏览器时，信令走的是Websocket，app用Websocket纯粹是没事找抽，直接C Socket既简单又高效。浏览器时，两socket间没啥心跳包机制，app时心跳包机制可很大提升效率。浏览器时，由于用Javascript开发，功能受限，app时用Native Code，自个想要什么就能实现什么。而且，WebRTC是跨平台包，基于C/C++的跨平台SDK也不是没有，何不在开发时顺便开发出个Windows平台app。以上导致了app不太可能和网页聊天，这又让浏览器少去很多应用场景。
+
+**综合来说，在浏览器不是WebRTC不行，而是其它原因导致有那么点尴尬。想做一个“完美”用户体验的聊天工具，终归还得用app。**
+
+为什么说对App是完全可行呢？浏览器在用的WebRTC其实分两层，底层是个用C++写的库（Native Code），然后上层写个Javascript封装，以便供HTML5调用。既然是写app，那完全不用管上层Js封装，而且Google在开发WebRTC时已考虑用在app，底层C++库的API已做得很完善了。也就是说，一旦直接用Native Code，完全和浏览器无关了，作为C/C++开发者，他就可以用WebRTC去实现自个想实现的所有东西。
+
+对直播使用场景，很多人是用移动设备，移动设备基本都是用app。而WebRTC中的Native Code部分跨平台特性很好，基本不用改，就能写出完全跨iOS、Android、Windows平台的代码，所以有了iOS/Android app，基本不耗成本Windows上的app就出来了。——当然，如果有人在Windows还是坚持要用浏览器，那只能说在Windows不得不留有瑕疵。
+
+为什么有人一想到Windows，直观就认为只有p2p？我猜是和默认的信令服务器是p2p有关。关于这默认的信令服务器是怎么个交互流程，如下图所示：
+
+![Full mesh model](./images/webrtc-signaling.png)****
+
+根据这个图，你可以发现，只要换了信令服务器，就有可能变成直播。而事实也的确是这样。就像有人说直播时图像单向就够了（主播传向观众），而WebRTC是双向，只要改信令服务器，立刻就单向了。 
+
+为什么强烈建议你基于WebRTC？对直播系统，难的不是服务器，而是客户端。客户端难的地方则主要体现在两个方面，一是网络传输有关，像侦听事件，同步主线程和读线程，穿透；二是流数据有关，像编码、解码、回声消除。而这些正是WebRTC帮你解决了。也正因为如此，现在很多直播系统最早的客户端其实是以WebRTC为根的，只是后面自个不断优化，慢慢地变成自个系统而已。诚然，官方WebRTC是有地方不尽如意，但它们不断更新。
+
+概括的说：
+
+1. **WebRTC整体的技术并不适合做直播。**WebRTC设计的初衷只是为了在两个浏览器/native app之间解决直接连接发送media streaming/data数据的，也就是所谓的peer to peer的通信，大多数的情况下不需要依赖于服务器的中转，因此一般在通信的逻辑上是一对一。而我们现在的直播服务大部分的情况下是一对多的通信，一个主播可能会有成千上万个接收端，这种方式用传统的P2P来实现是不可能的，所以目前直播的方案基本上都是会有直播服务器来做中央管理，主播的数据首先发送给直播服务器，直播服务器为了能够支持非常多用户的同事观看，还要通过边缘节点CDN的方式来做地域加速，所有的接收端都不会直接连接主播，而是从服务器上接收数据。
+2. **WebRTC内部包含的技术模块是非常适合解决直播过程中存在的各种问题的，**而且应该在大多数直播技术框架中都已经得到了部分应用，例如音视频数据的收发、音频处理回音消除降噪等。
+
+所以综上，可以使用WebRTC内部的技术模块来解决直播过程中存在的技术问题，但是不适合直接用WebRTC来实现直播的整体框架。
+
+### 9.2 多方会话实现方式
+
+WebRTC针对这多方会话提供了两种实现方式。
+
+**第一种实现方式：实现多个浏览器之间的对等连接——全网状模型**
+
+![Full mesh model](./images/Full-mesh-model.jpg)
+
+多个浏览器通过Web服务器访问网站，浏览器之间的通话并不通过任何流媒体服务器，而是直接通过对等连接，通过UDP来实现浏览器之间的通信。这个叫做全网状模型。
+
+**第二种实现方式：浏览器和媒体服务器建立对等连接——集中式模型**
+服务端除了Web服务器之外还需要架构一个台媒体服务器，媒体服务器和各个浏览器之间实现对点连接。架设媒体服务器的目的在于接收各个浏览器的媒体流六，之后通过媒体服务器把媒体流发给各个浏览器。
+
+**两种实现方式的利弊：**
+全网状：不需要架设媒体服务器，媒体延迟低质量高。但是如果人数很多的话就会导致浏览器的本地宽带增加，不适合多人会议。
+
+集中式：比较适合多人会话，节省本地宽带，但是只有少量浏览器查询的时候，这种体系的效率非常低（因为要走媒体服务器）。
+
+## <a name='who-use-WebRTC'>10. 业内哪些App在使用WebRTC？</a>
+
+目前，国内外有很多App都在使用WebRTC或者其相关技术，下面仅列举部分案例：
+
+**腾讯QQ和微信**  
+
+ 腾讯的QQ音视频在使用GIPS方案（WebRTC的核心源于GIPS），据说微信内部已大量使用WebRTC组件，其内嵌的浏览器也支持WebRTC。
+
+![Tencent](./images/industry-view-Tencent.png)
+
+![Tencent](./images/wx_html5test.png)
+
+**陌陌**  
+
+由国内知名WebRTC服务提供商声网提供技术支持。
+
+![momo](./images/success-case-momo.png)
+
+**荔枝FM**  
+
+由国内知名WebRTC服务提供商声网提供技术支持。
+
+![lizhi](./images/success-case-lizhi.png)
+
+**MeetMe**  
+
+由国内知名WebRTC服务提供商声网提供技术支持。
+
+![meet me](./images/success-case-meet-me.png)
+
+**狼人杀**  
+
+由国内知名WebRTC服务提供商声网提供技术支持。
+
+![werewolf](./images/success-case-werewolf.png)
+
+**去哪儿**  
+
+由国内知名WebRTC服务提供商声网提供技术支持。
+
+![去哪儿](./images/success-case-qunar.png)
+
+## <a name='advantages-and-disadvantages'>11. WebRTC的优缺点</a>
+
+**优点：**
+
+1. 方便。对于用户来说，在WebRTC出现之前想要进行实时通信就需要安装插件和客户端，但是对于很多用户来说，插件的下载、软件的安装和更新这些操作是复杂而且容易出现问题的，现在WebRTC技术内置于浏览器中，用户不需要使用任何插件或者软件就能通过浏览器来实现实时通信。对于开发者来说，在Google将WebRTC开源之前，浏览器之间实现通信的技术是掌握在大企业手中，这项技术的开发是一个很困难的任务，现在开发者使用简单的HTML标签和JavaScript API就能够实现Web音/视频通信的功能。
+2. 跨平台。因为基于浏览器，所以可跨浏览器（浏览器支持WebRTC）和跨操作系统平台，windows、Linux、ios、 android......全部支持。
+3. P2P的优势。使用P2P技术处理数据（音频、视频和文件等）的传输，可减少服务器端的性能压力和带宽成本（这是有条件的，有些网络环境下可能无法使用P2P）
+4. 一整套的解决方案。从采集，编解码，RTP打包，流量控制，音频处理，多通道混音，都给于了很好的支持，并且是开源的代码，大大节省了开发时间和成本。
+5. 免费。虽然WebRTC技术已经较为成熟，其集成了最佳的音/视频引擎，十分先进的codec，但是Google对于这些技术不收取任何费用。
+6. 强大的打洞能力。WebRTC技术包含了使用STUN、ICE、TURN、RTP-over-TCP的关键NAT和防火墙穿透技术，并支持代理。
+
+**缺点：**
+
+1. WebRTC中很多的参数都是由GIPS公司的工程师们依靠经验所设定的值，这就会出现卡顿、延时、回声、丢包、多人视频不稳定等问题，并且由于公网的稳定性或机型适配等外在因素，以上问题在项目上线后会更加严重。
+
+2. WebRTC缺乏服务器方案的设计和部署。
+
+3. 传输质量难以保证。WebRTC的传输设计基于P2P，难以保障传输质量，优化手段也有限，只能做一些端到端的优化，难以应对复杂的互联网环境。比如对跨地区、跨运营商、低带宽、高丢包等场景下的传输质量基本是靠天吃饭，而这恰恰是国内互联网应用的典型场景。
+
+4. WebRTC比较适合一对一的单聊，虽然功能上可以扩展实现群聊，但是没有针对群聊，特别是超大群聊进行任何优化。
+
+5. 设备端适配，如回声、录音失败等问题层出不穷。这一点在安卓设备上尤为突出。由于安卓设备厂商众多，每个厂商都会在标准的安卓框架上进行定制化，导致很多可用性问题（访问麦克风失败）和质量问题（如回声、啸叫）。
+
+6. 对Native开发支持不够。WebRTC顾名思义，主要面向Web应用，虽然也可以用于Native开发，但是由于涉及到的领域知识（音视频采集、处理、编解码、实时传输等）较多，整个框架设计比较复杂，API粒度也比较细，导致连工程项目的编译都不是一件容易的事。
+
+   ​	总而言之，WebRTC虽然提供了一套音视频实时通讯的解决方案，但是在实际应用中，由于网络传输、设备适配以及多方通话上都存在很多问题，效果并不理想。
+
+   ​	由此可见，WebRTC是一个优缺点兼有的技术，在拥有诱人的优点的同时，其缺点也十分的严重。在进行WebRTC的开发之前，请根据自身的情况来决定是自主开发还是使用第三方SDK。目前在市场上有很多第三方的音视频SDK可供选择，比如声网、腾讯、Intel、天翼RTC、网易云信、环信、融云、anychat等等，虽然这么多厂商提供的服务都大同小异，但他们的技术架构可能完全不同，比如天翼RTC是WebRTC SDK，腾讯是Native SDK。
+
+      由于WebRTC的复杂性和尚未完善性，下面的这些建议结合自己的实际参考：
+
+   ```
+   1. 音视频不是公司的核心方向，建议使用第三方SDK。
+   2. 项目时间紧，有多人视频场景，使用场景依赖于手机端，建议使用第三方SDK。
+   3. 公司没人音视频技术人才，建议使用第三方SDK或者技术外包。
+   4. 如果公司实力、财力、人力雄厚，时间也不紧急，可考虑WebRTC集成开发，虽然会有很多坑，但总是能填平的。
+   5. 如果音视频技术是公司的核心方向，但不想花太多时间去研究WebRTC，可直接找熟悉WebRTC的人来培训。
+   6. 项目时间不紧急、没有多人视频需求且音视频质量要求不高，可考虑WebRTC集成开发。
+   ```
+
+
+## <a name='protocols-advantages-and-disadvantages'>12. 直播领域所用协议的现状及其优缺点比较</a>
+
+直播领域常用到的推送协议主要有：
+
+1. HTTP-FLV，即将音视频数据封装成FLV，然后通过HTTP协议传输给客户端。这种直播传输实际上就是利用的flv文件的特点，只需要一个matedata和音视频各自header，后面的音视频数据就可以随意按照时间戳传输，当然视频得按照gop段来传输，这种直播数据实际上就是一个无限大的HTTP传输的flv文件，客户端利用flv特性，可以一边接受数据边解码播放。
+2. RTMP 是 Real Time Messaging Protocol（实时消息传输协议）的首字母缩写，由Adobe公司为Flash播放器和服务器之间音频、视频传输开发的开放协议。该协议基于 TCP，是一个协议族，包括 RTMP 基本协议及 RTMPT/RTMPS/RTMPE 等多种变种。RTMP 是一种设计用来进行实时数据通信的网络协议，主要用来在 Flash/AIR 平台和支持 RTMP 协议的流媒体/交互服务器之间进行音视频和数据通信。支持该协议的软件包括 Adobe Media Server/Ultrant Media Server/red5 等。RTMP其实实质上也是传输的flv格式的数据，同样是flv tag，只不过RTMP在传输上封装了一层，比如RTMP不仅可以直播，也可以推流。RTMP的直播原理同样也是利用了flv文件的特性，只需要一些头信息，后面就可以随意传输音视频数据，达到边传输边播放。**RTMP 是目前主流的流媒体传输协议，广泛用于直播领域，可以说市面上绝大多数的直播产品都采用了这个协议**。
+3. HTTP Live Streaming（缩写是HLS）是一个由苹果公司提出的基于HTTP的流媒体网络传输协议。是苹果公司QuickTime X和iPhone软件系统的一部分。它的工作原理是把整个流分成一个个小的基于HTTP的文件来下载，每次只下载一些。当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。在开始一个流媒体会话时，客户端会下载一个包含元数据的extended M3U (m3u8)playlist文件，用于寻找可用的媒体流。HLS只请求基本的HTTP报文，与实时传输协议（RTP)不同，HLS可以穿过任何允许HTTP数据通过的防火墙或者代理服务器。它也很容易使用内容分发网络来传输媒体流。苹果公司把HLS协议作为一个互联网草案（逐步提交），在第一阶段中已作为一个非正式的标准提交到IETF。但是，即使苹果偶尔地提交一些小的更新，IETF却没有关于制定此标准的有关进一步的动作。HLS在大部分的浏览器利用html5video是可以直接播放的。
+4. WebRTC，名称源自网页即时通信（英语：Web Real-Time Communication）的缩写，是一个支持网页浏览器进行实时语音对话或视频对话的 API。它于 2011 年 6 月 1 日开源并在 Google、Mozilla、Opera 支持下被纳入万维网联盟的 W3C 推荐标准。WebRTC默认使用UDP协议(实际上使用的是RTP/RTCP协议)进行音视频数据的传输，但是也可以通过TCP传输。 目前主要应用于视频会议和连麦中。
+
+这几个协议的优缺点比较如下：
+
+| 协议           | 优点                                       | 缺点                                       |
+| ------------ | :--------------------------------------- | :--------------------------------------- |
+| **HTTP FLV** | 实时性和RTMP相等； 相比于RTMP省去了一些协议交互时间，首屏时间更短，可拓展的功能更多； 将RTMP封装在HTTP协议之上的，可以更好的穿透防火墙等 | 不支持双向互动；目前在网页上只能用flash或者插件的方式解码播放，而且flash在cpu和内存上都是占用很高。 |
+| **RTMP**     | CDN 支持良好，主流的 CDN 厂商都支持；协议简单，在各平台上实现容易，PC flash原生支持；支持双向互动；实时性很好；防HTTP下载。 | 基于TCP，传输成本高，在弱网环境丢包率高的情况下问题显著；不支持浏览器推送；Adobe 私有协议，Adobe已经不再更新； 需要访问1935端口，国内网络情况的恶劣程度，并不是每个网络防火墙都允许1935包通过；目前在网页上只能用flash或者插件的方式解码播放，而且flash在cpu和内存上都是占用很高。 |
+| **HLS**      | 跨平台，支持度高，H5浏览器支持比较好，可以直接打开播放；IOS、安卓原生支持；技术实现简单。 | 延迟性比较大。                                  |
+| **WebRTC**   | W3C 标准，主流浏览器支持程度高；Google 在背后支撑，并在各平台有参考实现；底层基于 SRTP 和 UDP，弱网情况优化空间大；可以实现点对点通信，通信双方延时低。 | 传统CDN没有ICE、STUN、TURN及类似的服务提供             |
+
+
+## <a name='core-component'>13. WebRTC 的核心组件</a>
 
 - 音视频引擎：OPUS、VP8 / VP9、H264
 - 传输层协议：底层传输协议为 UDP
@@ -221,9 +410,9 @@ WebRTC是推动实时通信行业的一个主要技术，展望未来，网络�
 - P2P 内网穿透：STUN / TURN / ICE / Trickle ICE
 - 信令与 SDP 协商：HTTP / WebSocket / SIP、 Offer Answer 模型
 
-## <a name='webrtc-structure'>10. WebRTC架构图</a>
+## <a name='webrtc-structure'>14. WebRTC架构图</a>
 
-#### ![WebRTC structure](./images/webrtc-structure.png)
+![WebRTC structure](./images/webrtc-structure.png)
 
 ​                                                 **WebRTC architecture (from [webrtc.org](http://www.webrtc.org/reference/architecture))**
 
@@ -255,7 +444,7 @@ WebRTC是推动实时通信行业的一个主要技术，展望未来，网络�
 - RTCPeerConnection 用来建立和维护端到端连接，并提供高效的音视频流传输。
 - RTCDataChannel 用来支持端到端的任意二进制数据传输。
 
-## <a name='component-introduction'>11. WebRTC架构组件介绍</a>
+## <a name='component-introduction'>15. WebRTC架构组件介绍</a>
 
 ​ **(1) Your Web App**
 ​	Web开发者开发的程序，Web开发者可以基于集成WebRTC的浏览器提供的web API开发基于视频、音频的实时通信应用。
@@ -328,9 +517,9 @@ PS：VoiceEngine是WebRTC极具价值的技术之一，是Google收购GIPS公司
 ​	图像质量增强模块
 ​	对网络摄像头采集到的图像进行处理，包括明暗度检测、颜色增强、降噪处理等功能，用来提升视频质量。
 
-## <a name='web-api'>12. WebRTC浏览器API</a>
+## <a name='web-api'>16. WebRTC浏览器API</a>
 
-WebRTC实现了多个Web API接口，其中三个主要的Web API分别是:
+WebRTC实现了多个Web API接口，其中三个重要的Web API分别是:
 
 - **[MediaStream](https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-mediastream)：**通过MediaStream的API能够通过设备的摄像头及话筒获得视频、音频的同步流。
 - **[RTCPeerConnection](https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-rtcpeerconnection)：**RTCPeerConnection是WebRTC用于构建点对点之间稳定、高效的流传输的组件。
@@ -338,15 +527,15 @@ WebRTC实现了多个Web API接口，其中三个主要的Web API分别是:
 
 这里大致介绍一下这三个API：
 
-### 12.1 MediaStream (aka getUserMedia)
+### 16.1 MediaStream (aka getUserMedia)
 
 MediaStream API为WebRTC提供了从设备的摄像头、话筒获取视频、音频流数据的功能.
 
-#### 12.1.1 W3C标准
+#### 16.1.1 W3C标准
 
 详见：https://w3c.github.io/mediacapture-main/getusermedia.html
 
-#### 12.1.2 如何调用？
+#### 16.1.2 如何调用？
 
 可以通过`navigator.getUserMedia()`这个方法来调用，这个方法接受三个参数：
 
@@ -354,7 +543,7 @@ MediaStream API为WebRTC提供了从设备的摄像头、话筒获取视频、�
 2. 一个调用成功的回调函数，如果调用成功，传递给它一个流对象。
 3. 一个调用失败的回调函数，如果调用失败，传递给它一个错误对象。
 
-#### 12.1.3 浏览器兼容性处理
+#### 16.1.3 浏览器兼容性处理
 
 由于浏览器实现不同，他们经常会在实现标准版本之前，在方法前面加上前缀，所以一个兼容版本就像这样：
 
@@ -365,7 +554,7 @@ var getUserMedia = (navigator.getUserMedia ||
                     navigator.msGetUserMedia);
 ```
 
-#### 12.1.4 一个超级简单的例子
+#### 16.1.4 一个超级简单的例子
 
 这里写一个超级简单的例子，用来展现getUserMedia的效果：
 
@@ -469,7 +658,7 @@ localMediaStream的输出可以被发送到一或多个目的地：本地的音�
 
 ![WebRTC structure](./images/MediaStream.jpg)
 
-#### 12.1.5 约束对象(Constraints)
+#### 16.1.5 约束对象(Constraints)
 
 约束对象可以被设置在getUserMedia()和RTCPeerConnection的addStream方法中，这个约束对象是WebRTC用来指定接受什么样的流的，其中可以定义如下属性：
 
@@ -484,7 +673,7 @@ localMediaStream的输出可以被发送到一或多个目的地：本地的音�
 - MinFramerate：视频流的最小帧速率
 - MaxFramerate：视频流的最大帧速率
 
-### 12.2 RTCPeerConnection
+### 16.2 RTCPeerConnection
 
 在获取到音频和视频流后，下一步要做的就是将其发送出去。但这个跟client-server模式不同，这是client-client之间的传输，因此，在协议层面就必须解决NAT穿透问题，否则传输就无从谈起。
 
@@ -546,7 +735,7 @@ WebRTC使用RTCPeerConnection来在浏览器之间传递流数据，这个流数
 
 既然没有定义具体的信令的协议，我们就可以选择任意方式（AJAX、WebSocket），采用任意的协议（SIP、XMPP）来传递信令，建立信道。比如可以使用node的ws模块，在WebSocket上传递信令。
 
-#### 12.2.1 浏览器兼容处理
+#### 16.2.1 浏览器兼容处理
 
 还是前缀不同的问题，采用和上面类似的方法：
 
@@ -557,7 +746,7 @@ var PeerConnection = (window.PeerConnection ||
                     window.mozRTCPeerConnection);
 ```
 
-#### 12.2.2 创建和使用
+#### 16.2.2 创建和使用
 
 ```javascript
 //使用Google的stun服务器
@@ -642,7 +831,7 @@ socket.onmessage = function(event){
 };
 ```
 
-### 12.3 RTCDataChannel
+### 16.3 RTCDataChannel
 
 既然能建立点对点的信道来传递实时的视频、音频数据流，为什么不能用这个信道传一点其他数据呢？RTCDataChannel API就是用来干这个的，基于它我们可以在浏览器之间传输任意数据。DataChannel是建立在PeerConnection上的，不能单独使用。建立RTCPeerConnection连接之后，两端可以打开一或多个信道交换文本或二进制数据。
 
@@ -650,7 +839,7 @@ DataChannel和WebSocket的区别如下：
 
 ![WebRTC structure](./images/DataChannel-WebSocket.jpg)
 
-#### 12.3.1 使用DataChannel
+#### 16.3.1 使用DataChannel
 
 我们可以使用`channel = pc.createDataCHannel(“someLabel”);`来在PeerConnection的实例上创建Data Channel，并给与它一个标签。
 
@@ -735,17 +924,17 @@ function logError(){
 ```
 
 
-#### 12.3.2 通过Data Channel发送文件大致思路
+#### 16.3.2 通过Data Channel发送文件大致思路
 
 JavaScript已经提供了File API从input[ type= ‘file’]的元素中提取文件，并通过**FileReader**来将文件的转换成DataURL，这也意味着我们可以将DataURL分成多个碎片来通过Channel来进行文件传输。
 
 
 
-## <a name='signaling-server'>13. WebRTC信令交换</a>
+## <a name='signaling-server'>17. WebRTC信令交换</a>
 
 本节讲述了WebRTC中所涉及的信令交换以及聊天室中的信令交换，主要内容来自于：[WebRTC in the real world: STUN, TURN and signaling](http://www.html5rocks.com/en/tutorials/webrtc/infrastructure/)
 
-### 13.1 WebRTC的服务器
+### 17.1 WebRTC的服务器
 
 WebRTC提供浏览器之间的点对点信道进行数据传输，但是并不意味着WebRTC不需要服务器，建立这个信道，必须有服务器的参与。WebRTC需要服务器对其进行四方面的功能支持：
 
@@ -754,13 +943,13 @@ WebRTC提供浏览器之间的点对点信道进行数据传输，但是并不�
 3. NAT防火墙穿越；
 4. 如果点对点通信建立失败，可以作为中转服务器。
 
-### 13.2 NAT/防火墙穿越技术
+### 17.2 NAT/防火墙穿越技术
 
-#### 13.２.1 NAT简介
+#### 17.２.1 NAT简介
 
 NAT（Network Address Translation，网络地址转换）属接入广域网(WAN)技术，是一种将私有（保留）地址转化为合法IP地址的转换技术，主要用于实现私有网络访问公共网络的功能，它被广泛应用于各种类型Internet接入方式和各种类型的网络中。原因很简单，NAT不仅完美地解决了lP地址不足的问题，而且还能够有效地避免来自网络外部的攻击，隐藏并保护网络内部的计算机。
 
-#### 13.２.２ NAT分类
+#### 17.２.２ NAT分类
 
 根据Stun协议(RFC3489)，NAT大致分为下面四类：
 
@@ -794,13 +983,13 @@ C(202.88.88.88:2000)发送到 NAT(202.100.100.100:8000)的数据都可以到达A
 
 对于这种NAT连接不同的外部目标，原来NAT打开的端口会变化，而Cone NAT不会。虽然可以用端口猜测，但是成功的概率很小。因此放弃这种NAT的UDP打洞。
 
-#### 13.２.３ UDP hole punching
+#### 17.２.３ UDP hole punching
 
 对于Cone NAT，要采用UDP打洞，需要一个公网机器C来充当”介绍人”，内网的A、B先分别和C通信，打开各自的NAT端口，C这个时候知道A、B的公网IP:Port，现在A和B想直接连接，比如A给B发，除非B是Full Cone，否则不能通信。反之亦然，但是我们可以这样：
 
 A要连接B，A给B发一个UDP包，同时同，A让那个介绍人给B发一个命令，让B同时给A发一个UDP包，这样双方的NAT都会记录对方的IP，然后就会允许互相通信。
 
-#### 13.２.4 NAT穿越
+#### 17.２.4 NAT穿越
 
 我们目前大部分人连接互联网时都处于防火墙后面或者配置私有子网的家庭(NAT)路由器后面,这就导致我们的计算机的IP地址不是广域网IP地址,故而不能相互之间直接通讯。 正因为这样的一个场景,我们得想办法去穿越这些防火墙或者家庭(NAT)路由器，让两个同处于私有网络里的计算机能够通讯起来。建立点对点信道的一个常见问题，也就是NAT穿越技术问题，即在处于使用了NAT设备的私有TCP/IP网络中的主机之间需要建立连接时需要使用NAT穿越技术。以往在VoIP领域经常会遇到这个问题。目前已经有很多NAT穿越技术，但没有一项是完美的，因为NAT的行为是非标准化的。这些技术中大多使用了一个公共服务器，这个服务使用了一个从全球任何地方都能访问得到的IP地址。
 
@@ -836,7 +1025,7 @@ A要连接B，A给B发一个UDP包，同时同，A让那个介绍人给B发一�
 
 
 
-### 13.3 为什么需要信令？
+### 17.3 为什么需要信令？
 
 我们需要通过一系列的信令来建立浏览器之间的通信。而具体需要通过信令交换哪些内容呢？这里大概列了一下：
 
@@ -848,7 +1037,7 @@ A要连接B，A给B发一个UDP包，同时同，A让那个介绍人给B发一�
 
 这些信息的交换应该在点对点的流传输之前就全部完成。在建立连接之前，浏览器之间显然没有办法传递数据。所以我们需要通过服务器的中转，在浏览器之间传递这些数据，然后建立浏览器之间的点对点连接。但是WebRTC API中并没有实现这些。
 
-### 13.4 为什么WebRTC不去实现信令交换？
+### 17.4 为什么WebRTC不去实现信令交换？
 
 不去由WebRTC实现信令交换的原因很简单：WebRTC标准的制定者们希望能够最大限度地兼容已有的成熟技术。具体的连接建立方式由一种叫JSEP（JavaScript Session Establishment Protocol）的协议来规定，使用JSEP有两个好处：
 
@@ -863,7 +1052,7 @@ A要连接B，A给B发一个UDP包，同时同，A让那个介绍人给B发一�
 
 
 
-### 13.5 会话描述协议（Session Description Protocol）
+### 17.5 会话描述协议（Session Description Protocol）
 
 JSEP将客户端之间传递的信令分为两种:offer信令和answer信令。他们主要内容的格式都遵循会话描述协议（Session Description Protocal，简称SDP）。一个SDP的信令的内容大致上如下：
 
@@ -935,7 +1124,7 @@ a=sctpmap:5000 webrtc-datachannel 1024
 
 它是一个在点对点连接中描述自己的字符串，我们可以将其封装在JSON中进行传输，在PeerConnection建立后将其通过服务器中转后，将自己的SDP描述符和对方的SDP描述符交给PeerConnection就行了。若想深入了解，可以参考[SDP for the WebRTC draft-nandakumar-rtcweb-sdp-04](http://datatracker.ietf.org/doc/draft-nandakumar-rtcweb-sdp/?include_text=1)进行解析。
 
-### 13.6 信令与RTCPeerConnection建立
+### 17.6 信令与RTCPeerConnection建立
 
 在上一章节中介绍过，WebRTC使用RTCPeerConnection来在浏览器之间传递流数据，在建立RTCPeerConnection实例之后，想要使用其建立一个点对点的信道，我们需要做两件事：
 
@@ -944,7 +1133,7 @@ a=sctpmap:5000 webrtc-datachannel 1024
 
 需要注意的是，由于连接两端的主机都可能在内网或是在防火墙之后，我们需要一种对所有联网的计算机都通用的定位方式。这其中就涉及NAT/防火墙穿越技术，以及WebRTC用来达到这个目的所ICE框架。这一部分在上一章节中有介绍，这里不再赘述。
 
-### 13.7 通过offer和answer交换SDP描述符
+### 17.7 通过offer和answer交换SDP描述符
 
 大致上在两个用户（甲和乙）之间建立点对点连接流程应该是这个样子（这里不考虑错误的情况，RTCPeerConnection简称PC）：
 
@@ -960,7 +1149,7 @@ a=sctpmap:5000 webrtc-datachannel 1024
 
 通过在这一系列的信令交换之后，甲和乙所创建的PC实例都包含甲和乙的SDP描述符了，完成了两件事的第一件。我们还需要完成第二件事——获取连接两端主机的网络地址。
 
-### 13.8 通过ICE框架建立NAT/防火墙穿越的连接
+### 17.8 通过ICE框架建立NAT/防火墙穿越的连接
 
 这个网络地址应该是能从外界直接访问，WebRTC使用ICE框架来获得这个地址。RTCPeerConnection在创立的时候可以将ICE服务器的地址传递进去，如：
 
@@ -982,11 +1171,11 @@ var pc = new RTCPeerConnection(iceServer);
 
 这样连接就创立完成了，可以向RTCPeerConnection中通过`addStream()`加入流来传输媒体流数据。将流加入到RTCPeerConnection实例中后，对方就可以通过`onaddstream`所绑定的回调函数监听到了。调用`addStream()`可以在连接完成之前，在连接建立之后，对方一样能监听到媒体流。
 
-### 13.9 聊天室中的信令
+### 17.9 聊天室中的信令
 
 上面是两个用户之间的信令交换流程，但我们需要建立一个多用户在线视频聊天的聊天室。所以需要进行一些扩展，来达到这个要求。
 
-#### 13.9.1 用户操作
+#### 17.9.1 用户操作
 
 首先需要确定一个用户在聊天室中的操作大致流程：
 
@@ -1003,7 +1192,7 @@ var pc = new RTCPeerConnection(iceServer);
 2. 新用户加入房间时，发送房间内的其他用户信息给新加入房间的用户
 3. 用户离开房间时，发送离开用户的信息给房间内的其他用户
 
-#### 13.9.2 实现思路
+#### 17.9.2 实现思路
 
 以使用WebSocket为例，上面用户操作的流程可以进行以下修改：
 
@@ -1014,7 +1203,7 @@ var pc = new RTCPeerConnection(iceServer);
 5. 若有新用户加入，服务器发送一个用户加入信令（new_peer），信令中包含新加入的用户的信息，浏览器根据信息来建立与这个新用户的点对点连接
 6. 用户离开页面，关闭WebSocket连接
 
-#### 13.9.3 服务器实现
+#### 17.9.3 服务器实现
 
 由于用户可以只是建立连接，可能还没有进入具体房间，所以首先我们需要一个容器来保存所有用户的连接，同时监听用户是否与服务器建立了WebSocket的连接：
 
@@ -1132,13 +1321,11 @@ server.on('connection', function(socket) {
 
 最后再加上点对点的信令转发就行了，一份完整的代码可参考[SkyRTC项目源码](https://github.com/LingyuCoder/SkyRTC/blob/master/SkyRTC.js)
 
-
-
-## <a name='peer-to-peer'>14. WebRTC点对点通信</a>
+## <a name='peer-to-peer'>18. WebRTC点对点通信</a>
 
 WebRTC给我们带来了浏览器中的视频、音频聊天体验。但个人认为，它最实用的特性莫过于DataChannel——在浏览器之间建立一个点对点的数据通道。在DataChannel之前，浏览器到浏览器的数据传递通常是这样一个流程：浏览器A发送数据给服务器，服务器处理，服务器再转发给浏览器B。这三个过程都会带来相应的消耗，占用服务器带宽不说，还减缓了消息从发送到接收的时间。其实最理想的方式就是浏览器A直接与浏览B进行通信，服务器不需要参与其中。WebRTC DataChannel就提供了这样一种方式。当然服务器完全不参与其中，显然是不可能的，用户需要通过服务器上存储的信息，才能确定需要和谁建立连接。这里通过一个故事来讲述建立连接的过程：
 
-####14.1 DataChannel连接的建立
+####18.1 DataChannel连接的建立
 
 **故事一：老刘和老姚去钓鱼**
 
@@ -1185,7 +1372,7 @@ WebRTC给我们带来了浏览器中的视频、音频聊天体验。但个人�
 
 
 
-#### 14.2 DataChannel的分片传输
+#### 18.2 DataChannel的分片传输
 
 **故事二：老姚送礼物**
 
@@ -1259,7 +1446,7 @@ a.parentNode.removeChild(a);
 2. chrome下载是直接触发的，不会进行询问，firefox会先询问后下载，在询问过程中如果执行了revokeObjectURL，下载就会取消。
 
 
-#### 14.3 DataChannel传输的升级
+#### 18.3 DataChannel传输的升级
 
 如我们所知，WebRTC最有特点的地方其实是可以传输getUserMedia获得的视频、音频流，来实现视频聊天。但事实上我们的使用习惯来看，一般人不会一开始就打开视频聊天，而且视频聊天时很消耗内存的（32位机上一个连接至少20M左右好像，也有可能有出入）。所以常见的需求是，先建立一个包含datachannel的连接用于传输数据，然后在需要时升级成可以传输视频、音频。
 
@@ -1275,13 +1462,13 @@ a.parentNode.removeChild(a);
 
 
 
-## <a name='core-module-api'>15. WebRTC核心模块API</a>
+## <a name='core-module-api'>19. WebRTC核心模块API</a>
 
-### 15.1 网络传输模块：libjingle
+### 19.1 网络传输模块：libjingle
 
 WebRTC重用了libjingle的一些组件，主要是network和transport组件，关于libjingle的文档资料可以查看[**这里**](http://code.google.com/apis/talk/libjingle/developer_guide.html)。
 
-### 15.2 音频、视频图像处理的主要数据结构
+### 19.2 音频、视频图像处理的主要数据结构
 
 **常量\VideoEngine\VoiceEngine**
 
@@ -1295,7 +1482,7 @@ WebRTC重用了libjingle的一些组件，主要是network和transport组件，�
 | class **VoiceEngine** | voe_base.h     | How to allocate and release resources for the VoiceEngine using factory methods in the VoiceEngine class. It also lists the APIs which are required to enable file tracing and/or traces as callback messages |
 | class **VideoEngine** | vie_base.h     | How to allocate and release resources for the VideoEngine using factory methods in the VideoEngine class. It also lists the APIs which are required to enable file tracing and/or traces as callback messages |
 
-### 15.3 音频引擎（VoiceEngine）模块 APIs
+### 19.3 音频引擎（VoiceEngine）模块 APIs
 
 *下表列的是目前在 VoiceEngine中可用的sub APIs*
 
@@ -1317,7 +1504,7 @@ WebRTC重用了libjingle的一些组件，主要是network和transport组件，�
 | **VoEVideoSync**       | voe_video_sync.h       | Adds RTP header modification support, playout-delay tuning and monitoring. |
 | **VoEVolumeControl**   | voe_volume_control.h   | Adds speaker volume controls, microphone volume controls, mute support, and additional stereo scaling methods. |
 
-### 15.4 视频引擎（VideoEngine）模块 APIs
+### 19.4 视频引擎（VideoEngine）模块 APIs
 
 *下表列的是目前在 VideoEngine中可用的sub APIs*
 
@@ -1337,94 +1524,28 @@ WebRTC重用了libjingle的一些组件，主要是network和transport组件，�
 
 
 
-## <a name='multi-party-conversation'>16. WebRTC实现多方会话</a>
+## <a name='Links'>20. 有用的链接</a>
 
-实时音视频有两种会话方式，一种是点对点的，就是2个设备之间进行交流。就像2个人视频聊天这种场景的。另外一种是多方会话，就像视频会议这样的场景。
-
-#### 16.1 WebRTC适合做视频直播或音视频会议吗？
-
-先说结论：**完全可以！**
-
-但是，凡事总有但是，**也没那么简单**。你以为调用几个Chrome的API就能直播了？too simple
-
-那正确的方法是什么呢？
-
-1. 你得有一个实现了WebRTC相关协议的客户端。比如Chrome浏览器。
-2. 架设一个类似MCU系统的服务器。（不知道MCU是什么？看这：[MCU（视频会议系统中心控制设备）](https://baike.baidu.com/item/MCU/3248422#viewPageContent)）
-
-第一步，用你的客户端，比如Chrome浏览器，通过WebRTC相关的媒体API获取图像及声音信源，再用WebRTC中的通信API将图像和声音数据发送到MCU服务器。如果你只是做着玩玩，完全可以直接用Chrome浏览器做你的直播客户端。把摄像头麦克风连上电脑之后，Chrome可以用相关的js的API获取到摄像头和麦克风的数据。缺点就是如果长时间直播，Chrome的稳定性堪忧，因为chrome这样运行24小时以上内存占用很厉害，而且容易崩溃。
-第二步，MCU服务器根据你的需求对图像和声音数据进行必要的处理，比如压缩、混音等。你可能要问，WebRTC可以直接在浏览器之间P2P地传输流，为什么还要有中转的MCU服务器？因为Chrome的功能很弱，视频的分辨率控制、多路语音的混音都做不了，所以需要MCU参与。最重要的是，Chrome同时给6个客户端发视频流就很消耗资源了，所以你如果有超过10个用户收看的话，Chrome很容易崩溃。
-第三步，需要看直播的用户，通过他们的Chrome浏览器，链接上你的MCU服务器，并收取服务器转发来的图像和声音流。
-
-所以，**这就要看你用的客户端是什么**。如果你是想用浏览器，那WebRTC不是好方案。但如果你是用app，可以肯定回答：可以，而且强烈建议你基于WebRTC。
-
-WebRTC使web浏览器通过简单的JavaScript api接口实现实时通信功能。在这方面基本已成事实上标准，正如上面写的，它成为标准不是新闻，不成为标准才是新闻。国内就有不少从事和WebRTC相关的开发者，像有的公司就基于WebRTC包做些修改、然后给其它开发者用、号称是视频聊天SDK。这样公司好多，但真正做大却有点难。我想有两个原因：Javascript的限制，浏览器的限制。
-
-Javascript的限制。Javascript是脚本语言，能有什么功能取决于实现它的虚拟机，也就是浏览器这个应用程序。由于受限，问题来了，人民群众的需求总是琳琅满目，你都能提供吗？举个例子，直播过程中，要让对方的头上自动加顶红帽子，——当然，修改浏览器代码让加个帽子不是难事，可谁又知道接下会发生什么，难道要一个改一个？聊天往往是娱乐，娱乐经常是没啥规矩。由于这限制，开发者用它时会有这看法：东西是很好，但总是有那么点不足，而且即使是努力了也不可能解决（自个写浏览器除外）。
-
-浏览器的限制。这就要涉及到聊天场景。很现实问题，如果我想和你聊天，身边有手机，你认为会用浏览器吗？对PC，网页比app方便，而移动设备却有点反着来，而且将来移动设备会越来越多。关于这个再深入个问题：如果PC用浏览器，手机用app，聊天是否可行？技术实现上没问题，可事实上基本不会做，代价太高划不来。浏览器时，信令走的是Websocket，app用Websocket纯粹是没事找抽，直接C Socket既简单又高效。浏览器时，两socket间没啥心跳包机制，app时心跳包机制可很大提升效率。浏览器时，由于用Javascript开发，功能受限，app时用Native Code，自个想要什么就能实现什么。而且，WebRTC是跨平台包，基于C/C++的跨平台SDK也不是没有，何不在开发时顺便开发出个Windows平台app。以上导致了app不太可能和网页聊天，这又让浏览器少去很多应用场景。
-
-综合来说，在浏览器不是WebRTC不行，而是其它原因导致有那么点尴尬。想做一个“完美”用户体验的聊天工具，终归还得用app。
-
-为什么说对App是完全可行呢？浏览器在用的WebRTC其实分两层，底层是个用C++写的库（Native Code），然后上层写个Javascript封装，以便供HTML5调用。既然是写app，那完全不用管上层Js封装，而且Google在开发WebRTC时已考虑用在app，底层C++库的API已做得很完善了。也就是说，一旦直接用Native Code，完全和浏览器无关了，作为C/C++开发者，他就可以用WebRTC去实现自个想实现的所有东西。
-
-对直播使用场景，很多人是用移动设备，移动设备基本都是用app。而WebRTC中的Native Code部分跨平台特性很好，基本不用改，就能写出完全跨iOS、Android、Windows平台的代码，所以有了iOS/Android app，基本不耗成本Windows上的app就出来了。——当然，如果有人在Windows还是坚持要用浏览器，那只能说在Windows不得不留有瑕疵。
-
-为什么有人一想到Windows，直观就认为只有p2p？我猜是和默认的信令服务器是p2p有关。关于这默认的信令服务器是怎么个交互流程，如下图所示：
-
-![Full mesh model](./images/webrtc-signaling.png)
-
-根据这个图，你可以发现，只要换了信令服务器，就有可能变成直播。而事实也的确是这样。就像有人说直播时图像单向就够了（主播传向观众），而WebRTC是双向，只要改信令服务器，立刻就单向了。 
-
-为什么强烈建议你基于WebRTC？对直播系统，难的不是服务器，而是客户端。客户端难的地方则主要体现在两个方面，一是网络传输有关，像侦听事件，同步主线程和读线程，穿透；二是流数据有关，像编码、解码、回声消除。而这些正是WebRTC帮你解决了。也正因为如此，现在很多直播系统最早的客户端其实是以WebRTC为根的，只是后面自个不断优化，慢慢地变成自个系统而已。诚然，官方WebRTC是有地方不尽如意，但它们不断更新。
-
-也就是说：
-
-1. WebRTC整体的技术并不适合做直播。WebRTC设计的初衷只是为了在两个浏览器/native app之间解决直接连接发送media streaming/data数据的，也就是所谓的peer to peer的通信，大多数的情况下不需要依赖于服务器的中转，因此一般在通信的逻辑上是一对一。而我们现在的直播服务大部分的情况下是一对多的通信，一个主播可能会有成千上万个接收端，这种方式用传统的P2P来实现是不可能的，所以目前直播的方案基本上都是会有直播服务器来做中央管理，主播的数据首先发送给直播服务器，直播服务器为了能够支持非常多用户的同事观看，还要通过边缘节点CDN的方式来做地域加速，所有的接收端都不会直接连接主播，而是从服务器上接收数据。
-2. WebRTC内部包含的技术模块是非常适合解决直播过程中存在的各种问题的，而且应该在大多数直播技术框架中都已经得到了部分应用，例如音视频数据的收发、音频处理回音消除降噪等。
-
-所以综上，可以使用WebRTC内部的技术模块来解决直播过程中存在的技术问题，但是不适合直接用WebRTC来实现直播的整体框架：
-
-#### 16.2 多方会话实现方式
-
-WebRTC针对这多方会话提供了两种实现方式。
-
-**第一种实现方式：实现多个浏览器之间的对等连接——全网状模型**
-
-![Full mesh model](./images/Full-mesh-model.jpg)
-
-多个浏览器通过Web服务器访问网站，浏览器之间的通话并不通过任何流媒体服务器，而是直接通过对等连接，通过UDP来实现浏览器之间的通信。这个叫做全网状模型。
-
-**第二种实现方式：浏览器和媒体服务器建立对等连接——集中式模型**
-服务端除了Web服务器之外还需要架构一个台媒体服务器，媒体服务器和各个浏览器之间实现对点连接。架设媒体服务器的目的在于接收各个浏览器的媒体流六，之后通过媒体服务器把媒体流发给各个浏览器。
-
-**两种实现方式的利弊：**
-全网状：不需要架设媒体服务器，媒体延迟低质量高。但是如果人数很多的话就会导致浏览器的本地宽带增加，不适合多人会议。
-
-集中式：比较适合多人会话，节省本地宽带，但是只有少量浏览器查询的时候，这种体系的效率非常低（因为要走媒体服务器）。
-
-## <a name='Links'>17. 有用的链接</a>
-
-### 17. 1 Specifications:
+### 20. 1 Specifications:
 * WebRTC 1.0: Real-time Communication Between Browsers：https://www.w3.org/TR/webrtc/
 * Media Capture and Streams：https://w3c.github.io/mediacapture-main/
 * Media Capture from DOM Elements：https://w3c.github.io/mediacapture-fromelement/
 
-### 17. 2 Getting started:
+### 20. 2 Getting started:
 WebRTC官方网站：https://webrtc.org/start/
 
 A Study of WebRTC Security：http://webrtc-security.github.io/
 
-### 17. 3 Tutorials:
+### 20. 3 Tutorials:
 https://www.html5rocks.com/en/tutorials/webrtc/basics/
 
-### 17. 4  WebRTC API:
+### 20. 4  WebRTC API:
 https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API
 
-### 17. 5  WebRTC codelab:
+### 20. 5  WebRTC codelab:
 A step-by-step guide that explains how to build a complete video chat app, including a simple signaling server.  https://www.bitbucket.org/webrtc/codelab
 
-### 17. 6 Javascript frameworks
+### 20. 6 Javascript frameworks
 1. Video chat:
   * https://github.com/andyet/SimpleWebRTC
   * https://github.com/priologic/easyrtc
@@ -1434,7 +1555,9 @@ A step-by-step guide that explains how to build a complete video chat app, inclu
   * http://peerjs.com/
   * https://github.com/peer5/sharefest
 
-### 17. 7 Demos:
+### 20. 7 Demos:
+https://121.15.167.230:8090/demos/
+
 https://webrtc.github.io/samples/
 
 https://www.webrtc-experiment.com/
@@ -1443,7 +1566,7 @@ https://webcamtoy.com/zh/app/
 
 https://idevelop.ro/ascii-camera/
 
-### 17. 8 WebRTC教程:
+### 20. 8 WebRTC教程:
 
 1. WebRTC基础:
 
@@ -1502,7 +1625,7 @@ https://idevelop.ro/ascii-camera/
 
    [*Kurento教程*](http://doc-kurento.readthedocs.io/en/stable/tutorials.html)—这些教程会给你展示如何使用Kurento框架搭建不同种类的WebRTC及多媒体应用。教程从三个角度出发：Java，浏览器JavaScript和Node.js。
 
-### 17. 9 WebRTC服务提供商:
+### 20. 9 WebRTC服务提供商:
 1. 国外:
   * https://xirsys.com
   * https://tokbox.com/developer/
