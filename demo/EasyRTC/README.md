@@ -137,6 +137,90 @@ EasyRTC消除了开始使用WebRTC的痛苦，其有以下很酷的特征：
 - 在摄像头前面抬起左手，并考虑哪个视频窗格看起来是正确的。
 - 在摄像头前面保留一些打印的文本，并考虑哪个视频窗格看起来是正确的。
 
+
+#### 使用pm2守护进程来开机自启动server.js
+
+此处以在CentOS 7系统的安装过程为例。
+
+1. 安装PM2：
+```shell
+[root@os11728 src]# npm install -g pm2
+[root@os11728 src]# pm2 -V  #测试是否安装成功
+2.7.2
+```
+
+2. 确认node的位置：
+```shell
+[root@localhost server_example]# which node
+/usr/local/bin/node
+或：
+[root@localhost server_example]# whereis node
+node: /usr/sbin/node /usr/local/bin/node
+```
+
+3. 启动node.js应用脚本程序：
+```shell
+[root@localhost server_example]# NODE_ENV=production pm2 start /var/www/root/easyrtc/server_example/server.js  --name 'EasyRtc server' -f -i 0
+```
+
+4. 保存脚本：
+```shell
+[root@localhost server_example]# pm2 save
+```
+
+5. 创建开机启动脚本：
+```shell
+[root@localhost server_example]# pm2 startup systemd
+```
+
+6. 重启服务器：
+```shell
+[root@localhost server_example]# reboot
+```
+
+7. 列出由pm2管理的所有进程信息（还会显示一个进程会被启动多少次，因为没处理的异常）：
+
+```shell
+[root@localhost ~]# pm2 ls #或：pm2 list
+```
+![pm2 list](./images/pm2-list.png)
+
+8. 监视每个node进程的CPU和内存的使用情况：
+
+```shell
+[root@localhost ~]#pm2 monit
+```
+![pm2 monit](./images/pm2-monit.png)
+9. pm2其它常用命令：
+
+```shell
+[root@localhost src]# pm2 logs  #显示所有进程日志
+[root@localhost src]# pm2 stop all  #停止所有进程
+[root@localhost src]# pm2 restart all  #重启所有进程
+[root@localhost src]# pm2 reload all 0  #秒停机重载进程 (用于 NETWORKED 进程)
+[root@localhost src]# pm2 stop 0  #停止指定的进程
+[root@localhost src]# pm2 restart 0  #重启指定的进程
+[root@localhost src]# pm2 startup  #产生 init 脚本 保持进程活着
+[root@localhost src]# pm2 web  #运行健壮的 computer API endpoint (http://localhost:9615)
+[root@localhost src]# pm2 delete 0  #杀死指定的进程
+[root@localhost src]# pm2 delete all  #杀死全部进程
+
+```
+10. 运行进程的不同方式：
+
+```shell
+[root@localhost src]# pm2 start app.js -i max  #根据有效CPU数目启动最大进程数目
+[root@localhost src]# pm2 start app.js -i 3  #启动3个进程
+[root@localhost src]# pm2 start app.js -x  #用fork模式启动 app.js 而不是使用 cluster
+[root@localhost src]# pm2 start app.js -x -- -a 23  #用fork模式启动 app.js 并且传递参数 (-a 23)
+[root@localhost src]# pm2 start app.js --name serverone  #启动一个进程并把它命名为 serverone
+[root@localhost src]# pm2 stop serverone  #停止 serverone 进程
+[root@localhost src]# pm2 start app.json  #启动进程, 在 app.json里设置选项
+[root@localhost src]# pm2 start app.js -i max -- -a 23  #在--之后给 app.js 传递参数
+[root@localhost src]# pm2 start app.js -i max -e err.log -o out.log  #启动 并 生成一个配置文件
+
+```
+
 ## <a name='Useful-Terminology'>5. 有用的术语</a>
 
 - Video track（视频轨道）：表示单个视频或等效设备输出的对象
