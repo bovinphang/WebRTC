@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="df340fd6-14e1-4036-835b-cac0150f77a4" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="demo_instant_messaging_rooms.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_instant_messaging_rooms.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5460">
+              <caret line="182" column="27" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="demo_instant_messaging_rooms.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5820">
+              <caret line="218" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="247" selection-end-column="1" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+                <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+                <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+                <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+                <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="demo_multiparty.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="900">
+              <caret line="30" column="52" lean-forward="false" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="easyrtc_server.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_server.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="9" column="93" lean-forward="false" selection-start-line="9" selection-start-column="93" selection-end-line="9" selection-end-column="93" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="apprtc.debug.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/apprtc.debug.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="109590">
+              <caret line="3653" column="39" lean-forward="false" selection-start-line="3653" selection-start-column="24" selection-end-line="3653" selection-end-column="39" />
+              <folding>
+                <marker date="1512020720318" expanded="true" signature="235074:235094" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="callstats.min.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/callstats.min.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="18" column="4371" lean-forward="false" selection-start-line="18" selection-start-column="4371" selection-end-line="18" selection-end-column="4371" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="easyrtc_default_options.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_default_options.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="455">
+              <caret line="27" column="2" lean-forward="true" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3780">
+              <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1050">
+              <caret line="35" column="65" lean-forward="false" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="easyrtc.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161640">
+              <caret line="5388" column="27" lean-forward="false" selection-start-line="5388" selection-start-column="23" selection-end-line="5388" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="demo_room.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/css/demo_room.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4680">
+              <caret line="156" column="26" lean-forward="false" selection-start-line="156" selection-start-column="19" selection-end-line="156" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/css/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4380">
+              <caret line="146" column="50" lean-forward="false" selection-start-line="146" selection-start-column="44" selection-end-line="146" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="demo_room_old.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/css/demo_room_old.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="8" column="7" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="demo_multiparty.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_multiparty.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="10" column="53" lean-forward="false" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
+              <folding>
+                <element signature="n#style#0;n#img#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>onRejoinClick_</find>
+      <find>finishCallSetup_</find>
+      <find>getRoomList</find>
+      <find>number</find>
+      <find>easyrtc.getRoomList</find>
+      <find>AnyRoom</find>
+      <find>messageListener_</find>
+      <find>roomEntryListener</find>
+      <find>setDisconnectListener</find>
+      <find>connectEasyRTC_</find>
+      <find>loginSuccess_</find>
+      <find>joinRoom_</find>
+      <find>getCurrentClients_</find>
+      <find>console.log</find>
+      <find>successfully connected</find>
+      <find>setRoomOccupantListener</find>
+      <find>callEverybodyElse</find>
+      <find>callEverybodyElse_</find>
+      <find>roomEntryListener_</find>
+      <find>numberClients</find>
+      <find>maxCALLERS</find>
+      <find>leave</find>
+      <find>leaveRoom</find>
+      <find>leaveRoom_</find>
+      <find>errCodes</find>
+      <find>STUN</find>
+      <find>NOVIABLEICE</find>
+      <find>appIceServers</find>
+      <find>stun</find>
+      <find>192.168.9.223</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>vidos</replace>
+      <replace>hidden</replace>
+      <replace>videos</replace>
+      <replace>connectEasyRTC</replace>
+      <replace>CONFIG.activeBox</replace>
+      <replace>this.loadingParams_.maxCALLERS</replace>
+      <replace>appController.getIdOfBox_</replace>
+      <replace>numberClients</replace>
+      <replace>mute-button</replace>
+      <replace>text-entry-button</replace>
+      <replace>getCurrentClients</replace>
+    </replaceStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/demo_multiparty.html" />
+        <option value="$PROJECT_DIR$/easyrtc/server_example/server.js" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/js/apprtc.debug.js" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/demo_multiparty.js" />
+        <option value="$PROJECT_DIR$/easyrtc/index.html" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/css/demo_room.css" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/login.html" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/index.html" />
+        <option value="$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js" />
+        <option value="$PROJECT_DIR$/easyrtc/api/easyrtc.js" />
+        <option value="$PROJECT_DIR$/easyrtc/lib/easyrtc_default_options.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>false</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>false</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/easyrtc/node_modules" />
+    <handled-path value="$PROJECT_DIR$/easyrtc/server_example/node_modules" />
+  </component>
+  <component name="PhpServers">
+    <servers />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP 7.1.5" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1456" />
+    <option name="height" value="876" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>JavaScript</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="source_code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="source_code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="easyrtc" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="source_code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="easyrtc" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="api" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="source_code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="easyrtc" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="lib" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="source_code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="easyrtc" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="server_example" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="last_opened_file_path" value="D:/AMP/PHP/php.exe" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path" value="D:/Program Files/nodejs/node" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.detected.package.jscs" value="true" />
+    <property name="node.js.selected.package.jscs" value="" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="df340fd6-14e1-4036-835b-cac0150f77a4" name="Default" comment="" />
+      <created>1513759463698</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1513759463698</updated>
+      <workItem from="1513759465029" duration="3571000" />
+      <workItem from="1513819764676" duration="16250000" />
+      <workItem from="1514165301329" duration="2056000" />
+      <workItem from="1514179775557" duration="13336000" />
+      <workItem from="1514250482914" duration="22145000" />
+      <workItem from="1514337093029" duration="6620000" />
+      <workItem from="1514347857598" duration="11290000" />
+      <workItem from="1514426307333" duration="20595000" />
+      <workItem from="1514509753885" duration="12292000" />
+      <workItem from="1514855518721" duration="12938000" />
+      <workItem from="1514942948231" duration="20664000" />
+      <workItem from="1515029580787" duration="24094000" />
+      <workItem from="1515115768724" duration="14005000" />
+      <workItem from="1515376098198" duration="19411000" />
+      <workItem from="1515461558220" duration="18955000" />
+      <workItem from="1515546661586" duration="6553000" />
+      <workItem from="1515663577551" duration="5006000" />
+      <workItem from="1515721724117" duration="3396000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="233177000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31805158" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26040">
+          <caret line="868" column="94" lean-forward="false" selection-start-line="868" selection-start-column="94" selection-end-line="868" selection-end-column="94" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15000">
+          <caret line="500" column="0" lean-forward="true" selection-start-line="500" selection-start-column="0" selection-end-line="500" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+            <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_multiparty.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#img#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177240">
+          <caret line="5908" column="7" lean-forward="true" selection-start-line="5908" selection-start-column="7" selection-end-line="5908" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_instant_messaging_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5460">
+          <caret line="182" column="27" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24810">
+          <caret line="827" column="41" lean-forward="false" selection-start-line="827" selection-start-column="32" selection-end-line="827" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6810">
+          <caret line="227" column="15" lean-forward="false" selection-start-line="227" selection-start-column="15" selection-end-line="227" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+            <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_multiparty.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#img#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240270">
+          <caret line="8009" column="0" lean-forward="false" selection-start-line="8009" selection-start-column="0" selection-end-line="8010" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_instant_messaging_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1890">
+          <caret line="63" column="28" lean-forward="false" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25980">
+          <caret line="866" column="29" lean-forward="true" selection-start-line="866" selection-start-column="29" selection-end-line="866" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6120">
+          <caret line="228" column="46" lean-forward="true" selection-start-line="228" selection-start-column="46" selection-end-line="228" selection-end-column="46" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+            <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_multiparty.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#img#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240270">
+          <caret line="8009" column="0" lean-forward="false" selection-start-line="8009" selection-start-column="0" selection-end-line="8010" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_instant_messaging_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1890">
+          <caret line="63" column="28" lean-forward="true" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25980">
+          <caret line="866" column="29" lean-forward="true" selection-start-line="866" selection-start-column="29" selection-end-line="866" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6180">
+          <caret line="230" column="57" lean-forward="true" selection-start-line="230" selection-start-column="57" selection-end-line="230" selection-end-column="57" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+            <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12420">
+          <caret line="414" column="58" lean-forward="true" selection-start-line="414" selection-start-column="58" selection-end-line="414" selection-end-column="58" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+            <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_instant_messaging_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multistream.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="27" column="26" lean-forward="true" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo4.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="10" column="30" lean-forward="true" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/WeChat Files/bovinphang/Files/add.html" />
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_instant_messaging_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5460">
+          <caret line="182" column="27" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc_int.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3600">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc_app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8640">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_multiparty.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="10" column="53" lean-forward="false" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
+          <folding>
+            <element signature="n#style#0;n#img#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/demo_multiparty.js" />
+    <entry file="file://$PROJECT_DIR$/easyrtc/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-20938">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="15" column="23" lean-forward="false" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_default_event_listeners.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-31">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/css/demo_room_old.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="8" column="7" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/prettify/prettify.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="2" column="54" lean-forward="false" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4380">
+          <caret line="146" column="50" lean-forward="false" selection-start-line="146" selection-start-column="44" selection-end-line="146" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/css/demo_room.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4680">
+          <caret line="156" column="26" lean-forward="false" selection-start-line="156" selection-start-column="19" selection-end-line="156" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/manifest.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_instant_messaging_rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5820">
+          <caret line="218" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="247" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1514443723323" expanded="true" signature="2765:2771" ph=" " />
+            <marker date="1514443723323" expanded="true" signature="15524:15539" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15711:15726" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="15872:15887" ph="..." />
+            <marker date="1514443723323" expanded="true" signature="16313:16328" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/apprtc.debug.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109590">
+          <caret line="3653" column="39" lean-forward="false" selection-start-line="3653" selection-start-column="24" selection-end-line="3653" selection-end-column="39" />
+          <folding>
+            <marker date="1512020720318" expanded="true" signature="235074:235094" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty_new.js" />
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="84" column="31" lean-forward="false" selection-start-line="84" selection-start-column="17" selection-end-line="84" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="35" column="65" lean-forward="false" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/api/easyrtc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161640">
+          <caret line="5388" column="27" lean-forward="false" selection-start-line="5388" selection-start-column="23" selection-end-line="5388" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/demo_multiparty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="30" column="52" lean-forward="false" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3780">
+          <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/demos/js/callstats.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="18" column="4371" lean-forward="false" selection-start-line="18" selection-start-column="4371" selection-end-line="18" selection-end-column="4371" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_public_obj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-31">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_private_obj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="19" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/server_example/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="25" column="34" lean-forward="false" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="9" column="93" lean-forward="false" selection-start-line="9" selection-start-column="93" selection-end-line="9" selection-end-column="93" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easyrtc/lib/easyrtc_default_options.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="27" column="2" lean-forward="true" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="Copyright.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

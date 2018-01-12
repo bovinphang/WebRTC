@@ -876,9 +876,13 @@ no-cli
 
 #### 测试
 
-在浏览器访问http://外网ip:3478,如果看到“TURN Server”，说明已经搭好了。
+1. 在浏览器访问http://外网ip:3478,如果看到“TURN Server”，说明已经搭好了。
 
 ![测试TURN Server](./images/TURN_Server_test.png)
+
+2. 使用WinSTUN客户端测试。客户端下载地址：https://github.com/bovinphang/WebRTC/tree/master/demo/AppRTC/images/WinStunSetup-0-96.msi    ,官方链接地址：https://sourceforge.net/projects/stun/files/?source=navbar
+
+![测试TURN Server](./images/WinStun-test.png)
 
 ## <a name='nginx-https-supported'>十一、配置Nginx服务器支持HTTPS</a>
 
