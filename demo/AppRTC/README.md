@@ -479,6 +479,8 @@ ERROR    2017-10-19 04:15:39,486 wsgi.py:263]
 [root@localhost src]# firewall-cmd --zone=public --add-port=443/tcp --permanent #用于 ICE Server
 [root@localhost src]# firewall-cmd --zone=public --add-port=3478/tcp --permanent #用于 ICE Server
 [root@localhost src]# firewall-cmd --zone=public --add-port=3478/udp --permanent #用于 ICE Server
+[root@localhost src]# firewall-cmd --zone=public --add-port=5439/tcp --permanent # TURN listener port for TLS (Default: 5349)
+[root@localhost src]# firewall-cmd --zone=public --add-port=5439/udp --permanent # TURN listener port for TLS (Default: 5349)
 [root@localhost src]# firewall-cmd --zone=public --add-port=8000/tcp --permanent #用于 Room admin server
 [root@localhost src]# firewall-cmd --zone=public --add-port=8080/tcp --permanent #用于 Room Server，提供 HTTP 服务
 [root@localhost src]# firewall-cmd --zone=public --add-port=8089/tcp --permanent #用于 Signal Server，Collider 服务的端口，提供 WebSocket 服务。
@@ -762,9 +764,29 @@ Alias=collider.service
 
 ## <a name='coTurn-install'>十、安装coTurn</a>
 
+这里我们自己搭建一个属于自己stun/turn服务器。此服务器能够成功使用的先决条件即必须使用的一端能够访问到此服务器所在的主机。所以一般情况一定要具备**“公网”**环境！一般情况下申请的云主机都会提供公网环境。
+
 coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com/p/coturn/> 或者我们直接下载已经编译好的软件包，打开这个网址: <http://turnserver.open-sys.org/downloads/> 找到适合自己Linux系统的下载即可。
 
+#### 安装sqlite
+
+```shell
+[root@localhost src]# yum install sqlite
+```
+
 #### 安装coTurn
+
+编译安装
+
+```shell
+[root@localhost src]# git clone https://github.com/coturn/coturn
+[root@localhost src]# cd coturn
+[root@localhost coturn]# ./configure
+[root@localhost coturn]# make
+[root@localhost coturn]# make install
+```
+
+或：
 
 ```shell
 [root@localhost src]# wget http://turnserver.open-sys.org/downloads/v4.5.0.6/turnserver-4.5.0.6-CentOS7.2-x86_64.tar.gz
@@ -772,6 +794,19 @@ coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com
 [root@localhost src]# mv /usr/local/turnserver-4.5.0.6 /usr/local/turnserver
 [root@localhost src]# cd /usr/local/turnserver
 [root@localhost turnserver]# ./install.sh
+```
+
+#### 安装完成后，在bin目录下生成八个可执行文件，其用途如下：
+
+```
+    turnutils_uclient: 用于测试turn服务，模拟多个UDP,TCP,TLS or DTLS 类型的客户端
+    turnutils_peer
+    turnutils_stunclient: 用于测试stun服务
+    turnutils_rfc5769check
+    turnutils_natdiscovery
+    turnutils_oauth
+    turnserver: turn server相关操作
+    turnadmin: 用来管理账户，即turn server的user authentication 相关操作
 ```
 
 #### 生成签名证书
@@ -784,10 +819,10 @@ coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com
 
 #### 生成TurnServer用户名和密码
 
-命令格式：turnadmin -k -u 用户名 -r north.gov -p 密码
+命令格式：turnadmin -k -u 用户名 -r Realm域 -p 密码
 
 ```shell
-[root@localhost turnserver]# turnadmin -k -u bovin -r north.gov -p apprtc666
+[root@localhost turnserver]# turnadmin -k -u bovin -r richinfo -p apprtc666
 ```
 
 ​        -k 表示生成一个long-term credential key 
@@ -796,11 +831,55 @@ coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com
 
 ​        -p 表示密码 
 
-​        -r 表示Realm域，（这个值的设置可能会有影响）
+​        -r 表示Realm域标志，其实这个在这里随便写就可以。但是不能不写，要不然认证失败401
 
-复制保存一下生成出来的key，此处我的为：0x8894ae0fa69d69b54fbc7c4810a04660
+复制保存一下生成出来的key(md5码)，此处我的为：0x8894ae0fa69d69b54fbc7c4810a04660
 
-#### 编辑配置文件
+#### Set coturn configuration
+
+configuration有两种方式：
+
+**1. 一种是写在cmd line上，e.g. ：**
+
+```shell
+[root@localhost turnserver]# sudo turnserver -L 121.15.167.230 -o -a -f -v --mobility -m 10 --max-bps=100000 --min-port=32355 --max-port=65535 --user=ling:ling1234 --user=ling2:ling1234 -r demo
+```
+
+说明：
+
+-m 10 表示启动十个relay线程.。
+当TURN Server用于WebRTC时，必须使用long-term credential mechanism,  即指定 -a 或者 --lt-cred-mech
+
+--max-bps=100000 限制最大速度为100KB/s.。
+
+添加了两个用户ling 和ling2。
+
+**2. 另一种是写在configuration file，我这里是用第二种方式。**
+
+查看网卡名称：
+
+方法一：
+
+```shell
+[root@localhost turnserver]# cd /etc/sysconfig/network-scripts/ #进入网络配置文件目录
+[root@localhost network-scripts]# ls
+```
+
+![ls network-scripts](./images/ls-network-scripts.png)
+
+方法二：
+
+```shell
+[root@localhost turnserver]# ifconfig
+```
+
+![ifconfig](./images/ifconfig.png)
+
+图中可见，我的网卡名称是ens32，所以后面配置文件中要使用的是这个，如果他是eth0的话，就使用eth0 。
+
+通常coturn的default config search path是在 /usr/local/etc下，而coturn/example/turnserver.conf 是一个configuration file sample。
+
+编辑配置文件：
 
 ```shell
 [root@localhost turnserver]# vim /etc/turnserver/turnserver.conf
@@ -809,8 +888,16 @@ coTurn是一个C/C++语言的开源项目,项目地址: <https://code.google.com
 将其打开，修改内容如下：
 
 ```
-listening-device=eth0
-relay-device=eth0
+listening-device=ens32
+listening-port=3478
+tls-listening-port=5349
+listening-ip=121.15.167.230   #本地公网ip
+#listening-ip=YOU_IP2
+#(stun 需要两个公网ip，只有一个公网ip只能作文turn服务器)
+relay-device=ens32
+relay-ip=121.15.167.230     #本地公网ip
+external-ip=121.15.167.230   #本地公网ip
+relay-threads=50
 
 # 记得开启端口
 #min-port=49152
@@ -840,12 +927,16 @@ use-auth-secret
 # 这里我们使用“静态”的 KEY，Google 自己也用的这个
 # static-auth-secret=4080218913
 static-auth-secret=bovin
+
 user=bovin:0x8894ae0fa69d69b54fbc7c4810a04660   #（替换成上一步通过turnadmin生成的key）
 user=bovin:apprtc666
 
+#userdb=/var/db/turndb
+#max-bps=102400
+
 # TURN REST API的长期凭证机制范围。
-# 用户登录域
-#realm=
+# 用户登录域，填写你自己的域名
+realm=richinfo
 
 # 可为 TURN 服务提供更安全的访问
 stale-nonce=600
@@ -857,6 +948,10 @@ pkey=/usr/local/cert/turn_server_pkey.pem
 # 屏蔽 loopback, multicast IP地址的 relay
 no-loopback-peers
 no-multicast-peers
+
+pidfile="/var/run/turnserver/turnserver.pid"
+
+#sha256
 
 # 启用 Mobility ICE 支持
 mobility
@@ -879,6 +974,170 @@ no-cli
 1. 在浏览器访问http://外网ip:3478,如果看到“TURN Server”，说明已经搭好了。
 
 ![测试TURN Server](./images/TURN_Server_test.png)
+
+2. 测试STUN:
+
+   使用turnutils_stunclient程序测试其STUN服务是否正常:
+
+```shell
+[root@localhost ~]# turnutils_stunclient -p 3478 121.15.167.230
+0: IPv4. UDP reflexive addr: 121.15.167.230:35966
+```
+
+他会显示你的public ip和port。
+
+接下來用browser测试，在chrome console下，输入：
+
+```javascript
+var iceServers = { "iceServers": 
+                    [{ "url": "stun:121.15.167.230:3478" }] };
+var mediaConstraints = {
+ 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false}
+};
+
+offerer = new webkitRTCPeerConnection(iceServers);
+offerer.createOffer(function (SDP) {offerer.setLocalDescription(SDP);}, 
+                function(error) {alert(error);}, 
+                mediaConstraints);
+```
+
+可以看到SDP中的candidate有显示出电脑的public ip(192.168.20.125):
+
+![测试STUN Server](./images/stun-browser-test.png)
+
+3. 测试TURN
+
+   使用turnutils_uclient程序测试其TURN服务是否正常:
+
+为保证测试使用的服务是TURN服务，在TURN服务启动时，关掉STUN服务。
+
+在TURN服务启动时，如果是命令行，加入"--no-stun"配置；如果使用配置文件的话，加入"no-stun"选项。
+
+使用coTurn服务启动TURN服务后，执行以下命令即可：
+
+```shell
+[root@localhost turnserver]# turnutils_uclient -v -t -T -u bovin -w apprtc666 121.15.167.230
+```
+
+其中
+
+-v  ——表示给出详细提示
+
+-t  ——使用TCP协议（默认使用UDP）
+
+-T  ——TCP协议中继传输（默认是UDP）
+
+-u  ——TURN的用户名
+
+-w  ——TURN服务对应用户的密码
+
+121.15.167.230  ——TURN服务的IP地址
+
+执行结果如下:　
+
+```
+0: IPv4. Connected from: 192.168.2.222:9481
+0: IPv4. Connected to: 121.15.167.230:3478
+0: allocate sent
+0: allocate response received:
+0: allocate sent
+0: allocate response received:
+0: success
+0: IPv4. Received relay addr: 121.15.167.230:65502
+0: clnet_allocate: rtv=0
+0: refresh sent
+0: refresh response received:
+0: success
+0: IPv4. Connected from: 192.168.2.222:9482
+0: IPv4. Connected to: 121.15.167.230:3478
+0: IPv4. Connected from: 192.168.2.222:9483
+0: IPv4. Connected to: 121.15.167.230:3478
+0: allocate sent
+0: allocate response received:
+0: allocate sent
+0: allocate response received:
+0: success
+0: IPv4. Received relay addr: 121.15.167.230:65522
+0: clnet_allocate: rtv=0
+0: refresh sent
+0: refresh response received:
+0: success
+0: allocate sent
+0: allocate response received:
+0: allocate sent
+0: allocate response received:
+0: success
+0: IPv4. Received relay addr: 121.15.167.230:65510
+0: clnet_allocate: rtv=0
+0: refresh sent
+0: refresh response received:
+0: success
+0: create perm sent: 121.15.167.230:65510
+0: cp response received:
+0: success
+0: create perm sent: 121.15.167.230:65522
+0: cp response received:
+0: success
+0: tcp connect sent
+0: connection bind sent
+0: connect bind response received:
+0: success
+0: IPv4. TCP data network connected to: 121.15.167.230:3478
+0: connection bind sent
+0: connect bind response received:
+0: success
+0: IPv4. TCP data network connected to: 121.15.167.230:3478
+0: Total connect time is 0
+0: 2 connections are completed
+1: start_mclient: msz=2, tot_send_msgs=0, tot_recv_msgs=0, tot_send_bytes ~ 0, tot_recv_bytes ~ 0
+2: start_mclient: msz=2, tot_send_msgs=0, tot_recv_msgs=0, tot_send_bytes ~ 0, tot_recv_bytes ~ 0
+3: start_mclient: msz=2, tot_send_msgs=0, tot_recv_msgs=0, tot_send_bytes ~ 0, tot_recv_bytes ~ 0
+4: start_mclient: msz=2, tot_send_msgs=5, tot_recv_msgs=5, tot_send_bytes ~ 500, tot_recv_bytes ~ 500
+4: done, connection 0x600051970 closed.
+4: done, connection 0x600072160 closed.
+4: start_mclient: tot_send_msgs=10, tot_recv_msgs=10
+4: start_mclient: tot_send_bytes ~ 1000, tot_recv_bytes ~ 1000
+4: Total transmit time is 4
+4: Total lost packets 0 (0.000000%), total send dropped 0 (0.000000%)
+4: Average round trip delay 128.400000 ms; min = 10 ms, max = 189 ms
+4: Average jitter 47.600000 ms; min = 20 ms, max = 179 ms
+```
+
+接下來用browser测试，在chrome console下，输入：
+
+```javascript
+var iceServers = { "iceServers":[{'url':'turn:121.15.167.230:3478','username':'bovin','credential':'apprtc666'}] };
+var mediaConstraints = {
+ 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false}
+};
+
+offerer = new webkitRTCPeerConnection(iceServers);
+offerer.createOffer(function (SDP) {offerer.setLocalDescription(SDP);}, 
+                function(error) {alert(error);}, 
+                mediaConstraints);
+```
+
+可以看到SDP中的candidate有显示出TURN的public ip(121.15.167.230):
+
+```
+"v=0
+o=- 6314547054974724539 2 IN IP4 127.0.0.1
+s=-
+t=0 0
+a=group:BUNDLE audio
+a=msid-semantic: WMS
+m=audio 65526 RTP/SAVPF 111 103 104 9 0 8 106 105 13 126
+c=IN IP4 140.112.90.37
+a=rtcp:65526 IN IP4 140.112.90.37
+a=candidate:829852397 1 udp 2122194687 192.168.1.31 51965 typ host generation 0
+a=candidate:829852397 2 udp 2122194687 192.168.1.31 51965 typ host generation 0
+a=candidate:2146792989 1 tcp 1518214911 192.168.1.31 0 typ host tcptype active generation 0
+a=candidate:2146792989 2 tcp 1518214911 192.168.1.31 0 typ host tcptype active generation 0
+a=candidate:863054063 1 udp 41819903 121.15.167.230 65526 typ relay raddr 223.136.34.167 rport 5399 generation 0
+a=candidate:863054063 2 udp 41819903 121.15.167.230 65526 typ relay raddr 223.136.34.167 rport 5399 generation 0
+```
+
+
 
 2. 使用WinSTUN客户端测试。客户端下载地址：https://github.com/bovinphang/WebRTC/tree/master/demo/AppRTC/images/WinStunSetup-0-96.msi    ,官方链接地址：https://sourceforge.net/projects/stun/files/?source=navbar
 
